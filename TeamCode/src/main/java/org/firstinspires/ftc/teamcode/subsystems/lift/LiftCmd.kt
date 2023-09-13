@@ -8,6 +8,7 @@ import com.arcrobotics.ftclib.trajectory.TrapezoidProfile
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.util.ElapsedTime
 
+//TODO: Make the input parameter number of pixels high
 class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
     pidController,
     {lift.liftLeadMotor.currentPosition.toDouble()/(1950.0/18.0)},
@@ -22,7 +23,7 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
         addRequirements(lift)
         pidController.setTolerance(0.0)
         Log.d("lift", "init command")
-        lift.targetPos = pos
+        targetPos = pos
         Log.d("lift", "Changed target to $pos")
         timer.reset()
     }
@@ -36,7 +37,7 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
     override fun isFinished(): Boolean {
         if (timer.milliseconds()>=2000)
             return true
-        if(lift.liftLimit.state && pos==LiftPositions.HOME) {
+        if(lift.liftLimit.state && pos==0.0) {
             Log.d("Lift", "Hit encoder")
             return true
         }
@@ -45,7 +46,7 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
 
     override fun end(interrupted: Boolean) {
         when(pos){
-            LiftPositions.HOME -> {lift.liftLeadMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+            0.0 -> {lift.liftLeadMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
                 lift.liftSecondMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
                 Log.d("lift", "RESET ENCODER")
                 lift.liftLeadMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
