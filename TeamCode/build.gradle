@@ -36,7 +36,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-appindexing:9.8.0'
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 
-    implementation "com.acmerobotics.roadrunner:ftc:0.1.4"
+    implementation "com.acmerobotics.roadrunner:ftc:0.1.6"
     implementation "com.acmerobotics.dashboard:dashboard:0.4.13"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 }
