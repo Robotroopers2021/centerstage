@@ -12,7 +12,7 @@ import java.util.List;
 
 public class MecanumDriveSubsystem extends SubsystemBase {
 
-    private final MecanumDrive drive;
+    final MecanumDrive drive;
     private final boolean fieldCentric;
 
     public MecanumDriveSubsystem(MecanumDrive drive, boolean isFieldCentric) {

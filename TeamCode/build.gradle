@@ -29,6 +29,7 @@ repositories {
     maven {
         url = 'https://maven.brott.dev/'
     }
+    maven { url = 'https://jitpack.io' }
 }
 
 dependencies {
@@ -39,4 +40,6 @@ dependencies {
     implementation "com.acmerobotics.roadrunner:ftc:0.1.6"
     implementation "com.acmerobotics.dashboard:dashboard:0.4.13"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation 'com.github.Eeshwar-Krishnan:PhotonFTC:v3.0.0-ALPHA'
+    implementation 'com.github.AlphaGo16439:AGDistanceLocalization:v1.0.1'
 }

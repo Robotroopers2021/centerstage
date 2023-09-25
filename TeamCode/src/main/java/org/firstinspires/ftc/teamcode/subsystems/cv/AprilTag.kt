@@ -4,6 +4,7 @@ import android.util.Log
 import android.util.Size
 import com.acmerobotics.roadrunner.Twist2d
 import com.acmerobotics.roadrunner.Vector2d
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
 import com.qualcomm.robotcore.hardware.HardwareMap
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -24,17 +25,26 @@ class AprilTag(hardwareMap: HardwareMap) {
         .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
         .build()
     var visionPortal: VisionPortal
+    @Volatile var map = mutableMapOf<Int, Twist2d>()
 
     init {
         val builder = VisionPortal.Builder()
 
         builder.setCamera(hardwareMap.get(WebcamName::class.java, "Webcam 1"))
-        builder.setCameraResolution(Size(1920, 1080))
+        builder.setCameraResolution(Size(640, 480))
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
 
         builder.addProcessor(aprilTag)
 
         visionPortal = builder.build()
+
+        GlobalScope.launch(Dispatchers.Default){
+            while (true) {
+                aprilTag.detections.forEach {
+                    map[it.id] = Twist2d(Vector2d(it.ftcPose.x, it.ftcPose.y), it.ftcPose.yaw)
+                }
+            }
+        }
     }
 
     /**
@@ -42,7 +52,6 @@ class AprilTag(hardwareMap: HardwareMap) {
      * not the global position
      */
     fun detect(): Map<Int, Twist2d> {
-        var map = mutableMapOf<Int, Twist2d>()
         GlobalScope.launch(Dispatchers.Default){
             Log.i("AprilTag", Thread.currentThread().name.toString())
 
