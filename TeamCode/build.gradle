@@ -42,4 +42,5 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation 'com.github.Eeshwar-Krishnan:PhotonFTC:v3.0.0-ALPHA'
     implementation 'com.github.AlphaGo16439:AGDistanceLocalization:v1.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.9.0"
 }
