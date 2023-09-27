@@ -435,4 +435,13 @@ public final class MecanumDrive {
                 0.25, 0.1
         );
     }
+
+    public TrajectoryBuilder trajectoryBuilder(Pose2d beginPose) {
+        return new TrajectoryBuilder(
+                beginPose,
+                1e-6, 0.0,
+                defaultVelConstraint, defaultAccelConstraint,
+                0.25, 0.1
+        );
+    }
 }

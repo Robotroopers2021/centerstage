@@ -18,6 +18,8 @@ public class MecanumDriveSubsystem extends SubsystemBase {
     public MecanumDriveSubsystem(MecanumDrive drive, boolean isFieldCentric) {
         this.drive = drive;
         fieldCentric = isFieldCentric;
+
+        drive.actionBuilder(new Pose2d(0, 0, 0)).getDispResolution();
     }
 
     public void setPoseEstimate(Pose2d pose) {

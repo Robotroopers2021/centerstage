@@ -40,7 +40,7 @@ class ProjectionTrajectoryFollowerCommand(var drive: MecanumDriveSubsystem, t: T
         p.fieldOverlay().operations.addAll(c.operations)
 
         val robotVelRobot = drive.updatePoseEstimate()
-        runBlocking{launch {cvPose = channel.receive() }}
+        runBlocking{launch {cvPose = channel.receive()}}
         disp = dt.project(cvPose, disp)
         val poseTarget = dt[disp]
         var pose = drive.poseEstimate
