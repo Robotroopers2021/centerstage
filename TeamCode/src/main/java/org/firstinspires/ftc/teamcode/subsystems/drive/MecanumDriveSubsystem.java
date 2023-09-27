@@ -12,20 +12,22 @@ import java.util.List;
 
 public class MecanumDriveSubsystem extends SubsystemBase {
 
-    private final MecanumDrive drive;
+    final MecanumDrive drive;
     private final boolean fieldCentric;
 
     public MecanumDriveSubsystem(MecanumDrive drive, boolean isFieldCentric) {
         this.drive = drive;
         fieldCentric = isFieldCentric;
+
+        drive.actionBuilder(new Pose2d(0, 0, 0)).getDispResolution();
     }
 
     public void setPoseEstimate(Pose2d pose) {
         drive.pose = pose;
     }
 
-    public void updatePoseEstimate() {
-        drive.updatePoseEstimate();
+    public PoseVelocity2d updatePoseEstimate() {
+        return drive.updatePoseEstimate();
     }
 
     public void drive(double leftY, double leftX, double rightX) {
