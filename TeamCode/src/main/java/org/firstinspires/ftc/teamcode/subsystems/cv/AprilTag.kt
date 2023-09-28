@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import org.firstinspires.ftc.robotcontroller.internal.FtcOpModeRegister
 import org.firstinspires.ftc.robotcontroller.internal.FtcRobotControllerActivity
 import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 import org.firstinspires.ftc.vision.VisionPortal
@@ -24,23 +25,24 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 @OptIn(DelicateCoroutinesApi::class)
 class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode) {
     var aprilTag: AprilTagProcessor = AprilTagProcessor.Builder()
-        .setDrawAxes(true)
+        /*.setDrawAxes(true)
         .setDrawCubeProjection(true)
-        .setDrawTagOutline(true)
+        .setDrawTagOutline(true)*/
+        .setNumThreads(6)
+        .setLensIntrinsics(876.376640148741, 879.046105394020, 633.420091455433, 408.814246529796)
         .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
         .build()
+
     var visionPortal: VisionPortal
     @Volatile var channel = Channel<Map<Int, Vector2d>>()
 
     init {
         val builder = VisionPortal.Builder()
 
-        val cam = hardwareMap.get(Camera::class.java, "Webcam 1")
-
-        builder.setCamera(cam.cameraName)
+        builder.setCamera(hardwareMap.get(WebcamName::class.java, "Webcam 1"))
 
 
-        builder.setCameraResolution(Size(640, 480))
+        builder.setCameraResolution(Size(320, 240))
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
 
         builder.addProcessor(aprilTag)
