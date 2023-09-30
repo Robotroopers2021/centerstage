@@ -25,11 +25,7 @@ import org.openftc.apriltag.AprilTagDetectorJNI
 
 @OptIn(DelicateCoroutinesApi::class)
 class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode) {
-    var aprilTag: AprilTagProcessor = AprilTagProcessor.Builder()
-        .setNumThreads(6)
-        .setLensIntrinsics(876.376640148741, 879.046105394020, 633.420091455433, 408.814246529796)
-        .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
-        .build()
+    var aprilTag = AprilTagProcessorFast(876.376640148741, 879.046105394020, 633.420091455433, 408.814246529796)
 
     var visionPortal: VisionPortal
     @Volatile var channel = Channel<Map<Int, Vector2d>>()
@@ -39,6 +35,7 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode) {
 
         builder.setCamera(hardwareMap.get(WebcamName::class.java, "Webcam 1"))
 
+        //TODO: Figure out how to update decimation or resolution for range
 
         builder.setCameraResolution(Size(320, 240))
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
@@ -46,18 +43,6 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode) {
         builder.addProcessor(aprilTag)
 
         visionPortal = builder.build()
-
-        /*var session = Continuation.create({}, object: StateCallback{
-            override fun onConfigured(session: CameraCaptureSession) {
-            }
-            override fun onClosed(session: CameraCaptureSession) {
-            }
-        })
-
-        val captureSession = cam.createCaptureSession(session)
-
-        cam.createCaptureRequest(JPEG, org.firstinspires.ftc.robotcore.external.android.util.Size(1200, 800), 120)*/
-
 
         GlobalScope.launch(Dispatchers.Default){
             while (opMode.opModeIsActive()) {
