@@ -37,7 +37,7 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode) {
 
         //TODO: Figure out how to update decimation or resolution for range
 
-        builder.setCameraResolution(Size(320, 240))
+        builder.setCameraResolution(Size(800, 600))
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
 
         builder.addProcessor(aprilTag)
