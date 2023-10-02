@@ -21,9 +21,7 @@ class ForwardTest : LinearOpMode() {
         var channel = cv.channel
         var yDist: Double?
         var detection: Map<Int, Vector2d>
-        var dist = hardwareMap.get(DistanceSensor::class.java, "dist") as MB1242Ex
-        //var lowPassFilter = LowPassFilter(0.75)
-        var medianFilter = MedianFilter(10)
+        var lock = false
         waitForStart()
         while (opModeIsActive()) {
             detection = runBlocking {
@@ -31,26 +29,31 @@ class ForwardTest : LinearOpMode() {
             }
             yDist = detection.values.minOfOrNull { it.y }
             if (yDist != null) {
-                if(gamepad1.circle || yDist > 10) {
-                    drive.setDrivePowers(
-                        PoseVelocity2d(
-                            Vector2d(
-                                -gamepad1.left_stick_y.toDouble(),
-                                -gamepad1.left_stick_x.toDouble()
-                            ),
-                            -gamepad1.right_stick_x.toDouble()
-                        )
-                    )
-                } else{
-                    drive.setDrivePowers(PoseVelocity2d(Vector2d(0.0, 0.0), 0.0))
+                if(yDist<20){
+                    lock = true
                 }
             }
-            drive.updatePoseEstimate()
+            if(gamepad1.circle)
+                lock = false
+            if(!lock) {
+                drive.setDrivePowers(
+                    PoseVelocity2d(
+                        Vector2d(
+                            -gamepad1.left_stick_y.toDouble(),
+                            -gamepad1.left_stick_x.toDouble()
+                        ),
+                        -gamepad1.right_stick_x.toDouble()
+                    )
+                )
+            } else{
+                drive.setDrivePowers(PoseVelocity2d(Vector2d(0.0, 0.0), 0.0))
+            }
             telemetry.addData("x", drive.pose.position.x)
             telemetry.addData("y", drive.pose.position.y)
             telemetry.addData("heading", drive.pose.heading)
             telemetry.addData("fps", cv.visionPortal.fps)
             telemetry.addData("yDist", yDist)
+            telemetry.addData("lock", lock)
             telemetry.update()
         }
     }

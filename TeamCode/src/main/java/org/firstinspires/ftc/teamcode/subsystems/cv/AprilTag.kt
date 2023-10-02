@@ -25,11 +25,12 @@ import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 @OptIn(DelicateCoroutinesApi::class)
 class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode) {
     var aprilTag: AprilTagProcessor = AprilTagProcessor.Builder()
-        /*.setDrawAxes(true)
-        .setDrawCubeProjection(true)
-        .setDrawTagOutline(true)*/
-        .setNumThreads(6)
-        .setLensIntrinsics(876.376640148741, 879.046105394020, 633.420091455433, 408.814246529796)
+        .setDrawAxes(false)
+        .setDrawCubeProjection(false)
+        .setDrawTagOutline(false)
+        .setDrawTagID(false)
+        //.setLensIntrinsics(723.5042, 725.4909, 404.5462, 313.1578) 800x600
+        .setLensIntrinsics(292.4088, 292.7053, 159.1876, 124.7638)
         .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
         .build()
 
@@ -42,27 +43,17 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode) {
         builder.setCamera(hardwareMap.get(WebcamName::class.java, "Webcam 1"))
 
 
-        builder.setCameraResolution(Size(320, 240))
+        //builder.setCameraResolution(Size(320, 240))
+        builder.setCameraResolution(Size(800, 600))
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
 
         builder.addProcessor(aprilTag)
 
         visionPortal = builder.build()
 
-        /*var session = Continuation.create({}, object: StateCallback{
-            override fun onConfigured(session: CameraCaptureSession) {
-            }
-            override fun onClosed(session: CameraCaptureSession) {
-            }
-        })
-
-        val captureSession = cam.createCaptureSession(session)
-
-        cam.createCaptureRequest(JPEG, org.firstinspires.ftc.robotcore.external.android.util.Size(1200, 800), 120)*/
-
 
         GlobalScope.launch(Dispatchers.Default){
-            while (opMode.opModeIsActive()) {
+            while (true) {
                 channel.send(buildMap {
                     aprilTag.detections.forEach {
                         put(it.id, Vector2d(it.ftcPose.x, it.ftcPose.y))
