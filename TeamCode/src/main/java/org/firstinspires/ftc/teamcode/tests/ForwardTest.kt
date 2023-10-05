@@ -29,7 +29,7 @@ class ForwardTest : LinearOpMode() {
             }
             yDist = detection.values.minOfOrNull { it.y }
             if (yDist != null) {
-                if(yDist<20){
+                if(yDist<15){
                     lock = true
                 }
             }
@@ -52,6 +52,7 @@ class ForwardTest : LinearOpMode() {
             telemetry.addData("y", drive.pose.position.y)
             telemetry.addData("heading", drive.pose.heading)
             telemetry.addData("fps", cv.visionPortal.fps)
+            telemetry.addData("avgsolve", cv.aprilTag.perTagAvgPoseSolveTime)
             telemetry.addData("yDist", yDist)
             telemetry.addData("lock", lock)
             telemetry.update()
