@@ -5,6 +5,7 @@ import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.DisplacementTrajectory
 import com.acmerobotics.roadrunner.HolonomicController
+import com.acmerobotics.roadrunner.MotorFeedforward
 import com.acmerobotics.roadrunner.Trajectory
 import com.acmerobotics.roadrunner.Vector2d
 import com.acmerobotics.roadrunner.ftc.FlightRecorder.write
@@ -48,10 +49,15 @@ class ProjectionTrajectoryFollowerCommand(var drive: MecanumDriveSubsystem, t: T
 
         val wheelVels = drive.drive.kinematics.inverse(cmd)
         val voltage = drive.drive.voltageSensor.voltage
-        drive.drive.leftFront.power = drive.drive.feedforward.compute(wheelVels.leftFront) / voltage
-        drive.drive.leftBack.power = drive.drive.feedforward.compute(wheelVels.leftBack) / voltage
-        drive.drive.rightBack.power = drive.drive.feedforward.compute(wheelVels.rightBack) / voltage
-        drive.drive.rightFront.power = drive.drive.feedforward.compute(wheelVels.rightFront) / voltage
+        val feedforward = MotorFeedforward(
+            MecanumDrive.PARAMS.kS,
+            MecanumDrive.PARAMS.kV / MecanumDrive.PARAMS.inPerTick,
+            MecanumDrive.PARAMS.kA / MecanumDrive.PARAMS.inPerTick
+        )
+        drive.drive.leftFront.power = feedforward.compute(wheelVels.leftFront) / voltage
+        drive.drive.leftBack.power = feedforward.compute(wheelVels.leftBack) / voltage
+        drive.drive.rightBack.power = feedforward.compute(wheelVels.rightBack) / voltage
+        drive.drive.rightFront.power = feedforward.compute(wheelVels.rightFront) / voltage
         write("TARGET_POSE", PoseMessage(poseTarget.value()))
 
         p.put("x", pose.position.x)
