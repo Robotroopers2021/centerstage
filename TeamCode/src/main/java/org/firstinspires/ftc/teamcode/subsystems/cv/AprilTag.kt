@@ -5,7 +5,6 @@ import android.util.Size
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.Twist2d
 import com.acmerobotics.roadrunner.Vector2d
-import com.alphago.agDistanceLocalization.geometry.Pose
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.HardwareMap
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -24,7 +23,6 @@ import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit
-import kotlin.math.PI
 
 @OptIn(DelicateCoroutinesApi::class)
 class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, var mode: Mode = Mode.NORMAL) {

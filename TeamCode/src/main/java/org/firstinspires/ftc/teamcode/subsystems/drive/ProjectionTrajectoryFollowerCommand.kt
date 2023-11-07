@@ -10,9 +10,6 @@ import com.acmerobotics.roadrunner.Trajectory
 import com.acmerobotics.roadrunner.Vector2d
 import com.acmerobotics.roadrunner.ftc.FlightRecorder.write
 import com.arcrobotics.ftclib.command.CommandBase
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.firstinspires.ftc.teamcode.subsystems.cv.AprilTag
 
 
