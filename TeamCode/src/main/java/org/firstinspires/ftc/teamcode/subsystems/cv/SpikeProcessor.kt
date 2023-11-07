@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.subsystems.cv
 
 import android.R.id.input
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.RectF
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration
 import org.firstinspires.ftc.vision.VisionProcessor
@@ -231,6 +234,14 @@ class SpikeProcessor(var color: Color): VisionProcessor {
         scaleCanvasDensity: Float,
         userContext: Any?
     ) {
+        val paintBlue = Paint()
+        paintBlue.color = android.graphics.Color.BLUE
+        canvas!!.drawRect(android.graphics.Rect(region1_pointA.x.toInt(),
+            region1_pointA.y.toInt(), region1_pointB.x.toInt(), region1_pointB.y.toInt()), paintBlue)
+        canvas!!.drawRect(android.graphics.Rect(region2_pointA.x.toInt(),
+            region2_pointA.y.toInt(), region2_pointB.x.toInt(), region2_pointB.y.toInt()), paintBlue)
+        canvas!!.drawRect(android.graphics.Rect(region3_pointA.x.toInt(),
+            region3_pointA.y.toInt(), region3_pointB.x.toInt(), region3_pointB.y.toInt()), paintBlue)
     }
 
 }
