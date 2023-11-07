@@ -13,9 +13,10 @@ import com.arcrobotics.ftclib.command.CommandBase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.firstinspires.ftc.teamcode.subsystems.cv.AprilTag
 
 
-class ProjectionTrajectoryFollowerCommand(var drive: MecanumDriveSubsystem, t: Trajectory, private val channel: Channel<Vector2d>) :
+class ProjectionTrajectoryFollowerCommand(var drive: MecanumDriveSubsystem, t: Trajectory, val targetID: Int, private val aprilTag: AprilTag) :
     CommandBase() {
     var dt = DisplacementTrajectory(t)
     var hc = HolonomicController(
@@ -41,7 +42,7 @@ class ProjectionTrajectoryFollowerCommand(var drive: MecanumDriveSubsystem, t: T
         p.fieldOverlay().operations.addAll(c.operations)
 
         val robotVelRobot = drive.updatePoseEstimate()
-        runBlocking{launch {cvPose = channel.receive()}}
+        cvPose = aprilTag.getPose(targetID)!!.position
         disp = dt.project(cvPose, disp)
         val poseTarget = dt[disp]
         var pose = drive.poseEstimate
