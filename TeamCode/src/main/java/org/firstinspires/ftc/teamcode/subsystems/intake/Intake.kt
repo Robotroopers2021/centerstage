@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.DigitalChannel
 import com.qualcomm.robotcore.hardware.HardwareMap
+import com.qualcomm.robotcore.hardware.Servo
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
 @Config
@@ -21,6 +22,8 @@ class Intake(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
     var blinkinLeft: RevBlinkinLedDriver
     var blinkinRight: RevBlinkinLedDriver
     var mTelemetry: MultipleTelemetry
+    var servoLeft: Servo
+    var servoRight: Servo
 
     init{
         mTelemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
@@ -35,6 +38,9 @@ class Intake(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
 
         blinkinLeft = hardwareMap.get(RevBlinkinLedDriver::class.java, "blinkinLeft")
         blinkinRight = hardwareMap.get(RevBlinkinLedDriver::class.java, "blinkinRight")
+
+        servoLeft = hardwareMap.get(Servo::class.java, "servoLeft")
+        servoRight = hardwareMap.get(Servo::class.java, "servoRight")
     }
 
     fun on(){

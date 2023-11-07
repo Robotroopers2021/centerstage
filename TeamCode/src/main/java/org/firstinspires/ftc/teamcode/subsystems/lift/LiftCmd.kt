@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems.lift
 
 import android.util.Log
+import com.acmerobotics.dashboard.config.Config
 import com.arcrobotics.ftclib.command.ProfiledPIDCommand
 import com.arcrobotics.ftclib.controller.wpilibcontroller.ElevatorFeedforward
 import com.arcrobotics.ftclib.controller.wpilibcontroller.ProfiledPIDController
@@ -9,6 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.util.ElapsedTime
 
 //TODO: Make the input parameter number of pixels high
+@Config
 class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
     pidController,
     {lift.liftLeadMotor.currentPosition.toDouble()/(1950.0/18.0)},
@@ -18,9 +20,12 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
         targetPos =state.position},
     lift
 ){
+    init {
+        addRequirements(lift)
+    }
+
     val timer = ElapsedTime()
     override fun initialize() {
-        addRequirements(lift)
         pidController.setTolerance(0.0)
         Log.d("lift", "init command")
         targetPos = pos

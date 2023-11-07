@@ -5,8 +5,12 @@ import com.qualcomm.hardware.rev.RevBlinkinLedDriver
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
 
 class IntakeCmd(val intake: Intake): CommandBase() {
-    override fun initialize() {
+    init {
         addRequirements(intake)
+    }
+
+    override fun initialize() {
+        intake.on()
     }
 
     override fun isFinished(): Boolean {
