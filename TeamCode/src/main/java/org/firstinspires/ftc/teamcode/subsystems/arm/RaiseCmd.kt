@@ -12,6 +12,6 @@ class RaiseCmd(val arm: Arm): CommandBase() {
     }
 
     override fun isFinished(): Boolean {
-        return abs(arm.position - Arm.raisePos) < 0.01
+        return abs(arm.armLeft.position - Arm.raisePos) < 0.01
     }
 }
