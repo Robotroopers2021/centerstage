@@ -12,6 +12,6 @@ class LowerCmd(val arm: Arm): CommandBase() {
     }
 
     override fun isFinished(): Boolean {
-        return abs(arm.position - Arm.lowerPos) < 0.01
+        return abs(arm.armLeft.position - Arm.lowerPos) < 0.01
     }
 }

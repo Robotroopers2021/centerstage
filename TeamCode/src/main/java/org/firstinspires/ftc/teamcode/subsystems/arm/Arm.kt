@@ -13,7 +13,7 @@ class Arm(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
     var armLeft: Servo
     var armRight: Servo
 
-    var analog: AnalogInput
+//    var analog: AnalogInput
 
     var wrist: Servo
 
@@ -35,7 +35,7 @@ class Arm(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
         //TODO: Set directions for servos
         //armLeft.direction = Servo.Direction.REVERSE
 
-        analog = hardwareMap.get(AnalogInput::class.java, "armAnalog")
+//        analog = hardwareMap.get(AnalogInput::class.java, "armAnalog")
     }
 
     fun raise(){
@@ -47,7 +47,4 @@ class Arm(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
         armLeft.position = lowerPos
         armRight.position = 1-lowerPos
     }
-
-    val position: Double
-        get() = analog.voltage/3.3*360
 }

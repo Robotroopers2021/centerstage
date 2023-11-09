@@ -31,14 +31,14 @@ class Lift(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
         liftLeadMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
         liftSecondMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
-        mTelemetry.addData("Lift Pos", liftLeadMotor.currentPosition)
-        mTelemetry.addData("Lift Target Pos", LiftCmd.targetPos*(1950.0/18.0))
+        mTelemetry.addData("Lift Pos", liftLeadMotor.currentPosition )
+        mTelemetry.addData("Lift Target Pos", LiftCmd.targetPos*(LiftConstants.ticksPerInch))
         mTelemetry.update()
     }
 
     override fun periodic(){
         mTelemetry.addData("Lift Pos", liftLeadMotor.currentPosition)
-        mTelemetry.addData("Lift Target Pos", LiftCmd.targetPos*(1950.0/18.0))
+        mTelemetry.addData("Lift Target Pos", LiftCmd.targetPos*(LiftConstants.ticksPerInch))
         mTelemetry.addData("Lift Power", liftLeadMotor.power)
         mTelemetry.update()
     }

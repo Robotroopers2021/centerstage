@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime
 @Config
 class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
     pidController,
-    {lift.liftLeadMotor.currentPosition.toDouble()/(1950.0/18.0)},
+    {lift.liftLeadMotor.currentPosition.toDouble()/(LiftConstants.ticksPerInch)},
     pos,
     { output: Double, state: TrapezoidProfile.State -> lift.liftLeadMotor.power = output+ feedforward.calculate(state.velocity)
         lift.liftSecondMotor.power = lift.liftLeadMotor.power
@@ -33,19 +33,19 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
         timer.reset()
     }
     companion object{
-        var constraints = TrapezoidProfile.Constraints(300.0, 300.0)
-        var pidController = ProfiledPIDController(0.3, 0.0, 0.005, constraints)
-        var feedforward = ElevatorFeedforward(0.02, 0.02, 0.007, 0.0)
+        var constraints = TrapezoidProfile.Constraints(LiftConstants.maxVel, LiftConstants.maxAccel)
+        var pidController = ProfiledPIDController(LiftConstants.kp, LiftConstants.ki, LiftConstants.kd, constraints)
+        var feedforward = ElevatorFeedforward(LiftConstants.ks, LiftConstants.kg, LiftConstants.kv, LiftConstants.ka)
         var targetPos = 0.0
     }
 
     override fun isFinished(): Boolean {
         if (timer.milliseconds()>=2000)
             return true
-        if(lift.liftLimit.state && pos==0.0) {
-            Log.d("Lift", "Hit encoder")
-            return true
-        }
+//        if(lift.liftLimit.state && pos==0.0) {
+//            Log.d("Lift", "Hit encoder")
+//            return true
+//        }
         return pidController.atGoal()
     }
 
