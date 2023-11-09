@@ -34,11 +34,13 @@ repositories {
 
 dependencies {
     implementation project(':FtcRobotController')
+    implementation files('/home/aneesh/AndroidStudioProjects/RoboLog/robolog/build/outputs/aar/robolog-debug.aar')
     annotationProcessor files('lib/OpModeAnnotationProcessor.jar')
 
     implementation "com.acmerobotics.roadrunner:ftc:0.1.8"
     implementation "com.acmerobotics.dashboard:dashboard:0.4.14"
 
+    implementation("org.apache.commons:commons-csv:1.10.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation 'com.github.Eeshwar-Krishnan:PhotonFTC:v3.0.0-ALPHA'
     implementation 'com.github.AlphaGo16439:AGDistanceLocalization:v1.0.1'

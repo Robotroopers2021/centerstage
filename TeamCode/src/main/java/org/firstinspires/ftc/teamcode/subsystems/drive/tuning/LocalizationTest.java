@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.drive.TankDrive;
+import org.robotroopers.robolog.RoboLog;
 
 public class LocalizationTest extends LinearOpMode {
     @Override
@@ -14,8 +15,12 @@ public class LocalizationTest extends LinearOpMode {
         if (TuningOpModes.DRIVE_CLASS.equals(MecanumDrive.class)) {
             MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
+            RoboLog.INSTANCE.registerBattery(hardwareMap.voltageSensor.iterator().next());
+            RoboLog.INSTANCE.registerMotor(drive.leftFront);
+
             waitForStart();
 
+            RoboLog.INSTANCE.start();
             while (opModeIsActive()) {
                 drive.setDrivePowers(new PoseVelocity2d(
                         new Vector2d(
@@ -32,6 +37,7 @@ public class LocalizationTest extends LinearOpMode {
                 telemetry.addData("heading", drive.pose.heading);
                 telemetry.update();
             }
+            RoboLog.INSTANCE.stop();
         } else if (TuningOpModes.DRIVE_CLASS.equals(TankDrive.class)) {
             TankDrive drive = new TankDrive(hardwareMap, new Pose2d(0, 0, 0));
 
