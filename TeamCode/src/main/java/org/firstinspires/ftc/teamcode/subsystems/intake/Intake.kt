@@ -15,30 +15,30 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 @Config
 class Intake(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
     var intake: DcMotorEx
-    var colorLeft: RevColorSensorV3
-    var colorRight: RevColorSensorV3
-    var blinkinLeft: RevBlinkinLedDriver
-    var blinkinRight: RevBlinkinLedDriver
-    var mTelemetry: MultipleTelemetry
-    var servoLeft: Servo
-    var servoRight: Servo
+//    var colorLeft: RevColorSensorV3
+//    var colorRight: RevColorSensorV3
+//    var blinkinLeft: RevBlinkinLedDriver
+//    var blinkinRight: RevBlinkinLedDriver
+//    var mTelemetry: MultipleTelemetry
+//    var servoLeft: Servo
+//    var servoRight: Servo
 
     init{
-        mTelemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
+//        mTelemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
         intake = hardwareMap.get(DcMotorEx::class.java, "intake")
         //intake.direction = DcMotorSimple.Direction.REVERSE
         intake.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         intake.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
         intake.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER
 
-        colorLeft = hardwareMap.get(RevColorSensorV3::class.java, "colorLeft")
-        colorRight = hardwareMap.get(RevColorSensorV3::class.java, "colorRight")
-
-        blinkinLeft = hardwareMap.get(RevBlinkinLedDriver::class.java, "blinkinLeft")
-        blinkinRight = hardwareMap.get(RevBlinkinLedDriver::class.java, "blinkinRight")
-
-        servoLeft = hardwareMap.get(Servo::class.java, "servoLeft")
-        servoRight = hardwareMap.get(Servo::class.java, "servoRight")
+//        colorLeft = hardwareMap.get(RevColorSensorV3::class.java, "colorLeft")
+//        colorRight = hardwareMap.get(RevColorSensorV3::class.java, "colorRight")
+//
+//        blinkinLeft = hardwareMap.get(RevBlinkinLedDriver::class.java, "blinkinLeft")
+//        blinkinRight = hardwareMap.get(RevBlinkinLedDriver::class.java, "blinkinRight")
+//
+//        servoLeft = hardwareMap.get(Servo::class.java, "servoLeft")
+//        servoRight = hardwareMap.get(Servo::class.java, "servoRight")
     }
 
     fun on(){
