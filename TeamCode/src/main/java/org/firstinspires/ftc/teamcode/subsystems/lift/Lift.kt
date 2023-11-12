@@ -21,8 +21,8 @@ class Lift(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
     init{
         mTelemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
         liftLeadMotor = hardwareMap.get(DcMotorEx::class.java, "liftLead")
-        liftLeadMotor.direction = DcMotorSimple.Direction.REVERSE
         liftSecondMotor = hardwareMap.get(DcMotorEx::class.java, "lift2")
+        liftSecondMotor.direction = DcMotorSimple.Direction.REVERSE
         liftLeadMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         liftSecondMotor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         liftLimit = hardwareMap.get(DigitalChannel::class.java, "liftLimit")
