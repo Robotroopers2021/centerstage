@@ -19,7 +19,7 @@ class GamepadDrive(
         drive.setDrivePower(
             PoseVelocity2d(
                 Vector2d(
-                    -leftY.asDouble,
+                    leftY.asDouble,
                     -leftX.asDouble
                 ),
                 -rightX.asDouble

@@ -26,7 +26,7 @@ class TestOp : CommandOpMode() {
     lateinit var drive : MecanumDriveSubsystem
     lateinit var lift : Lift
     lateinit var intake : Intake
-//    lateinit var arm : Arm
+    lateinit var arm : Arm
 
     override fun initialize() {
         var dashboard = FtcDashboard.getInstance()
@@ -37,7 +37,7 @@ class TestOp : CommandOpMode() {
         lift = Lift(hardwareMap, telemetry)
         drive = MecanumDriveSubsystem(MecanumDrive(hardwareMap, Pose2d(0.0,0.0,0.0)), false)
         intake = Intake(hardwareMap, telemetry)
-//        arm = Arm(hardwareMap, telemetry)
+        //arm = Arm(hardwareMap, telemetry)
 
         val liftCmd = LiftCmd(lift, LiftConstants.depositHeight)
 //        val armLower = LowerCmd(arm)
@@ -54,7 +54,11 @@ class TestOp : CommandOpMode() {
 //            .whenPressed(armLower)
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0}
-            .whileActiveContinuous(InstantCommand({intake.intake.power = 1.0}))
+            .whileActiveContinuous(InstantCommand({intake.intake.power = 0.75}))
+            .whenInactive(InstantCommand({intake.intake.power = 0.0}))
+
+        Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
+            .whileActiveContinuous(InstantCommand({intake.intake.power = -0.75}))
             .whenInactive(InstantCommand({intake.intake.power = 0.0}))
 
         schedule(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }))
@@ -62,7 +66,7 @@ class TestOp : CommandOpMode() {
     }
     override fun run() {
         super.run()
-//        telemetry.addData("Arm Position", arm.position)
+        //stelemetry.addData("Arm Position", arm.position)
         telemetry.addData("Lift Position", lift.liftLeadMotor.currentPosition)
         telemetry.update()
     }
