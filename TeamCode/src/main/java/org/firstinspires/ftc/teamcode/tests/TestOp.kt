@@ -37,18 +37,19 @@ class TestOp : CommandOpMode() {
         lift = Lift(hardwareMap, telemetry)
         drive = MecanumDriveSubsystem(MecanumDrive(hardwareMap, Pose2d(0.0,0.0,0.0)), false)
         intake = Intake(hardwareMap, telemetry)
-        //arm = Arm(hardwareMap, telemetry)
-
-        val liftCmd = LiftCmd(lift, LiftConstants.depositHeight)
+        arm = Arm(hardwareMap, telemetry)
 //        val armLower = LowerCmd(arm)
 //        val armRaise = RaiseCmd(arm)
         val intakeCmd = IntakeCmd(intake)
 
         gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-            .whenPressed(liftCmd)
+            .whenPressed(LiftCmd(lift, LiftConstants.depositHeight))
 
-//        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_UP)
-//            .whenPressed(armRaise)
+        gamepad1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+            .whenPressed(LiftCmd(lift, 0.0))
+
+        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+            .whenPressed(LowerCmd(arm))
 //
 //        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
 //            .whenPressed(armLower)
@@ -62,7 +63,7 @@ class TestOp : CommandOpMode() {
             .whenInactive(InstantCommand({intake.intake.power = 0.0}))
 
         schedule(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }))
-        register(lift, intake, /*arm*/)
+        register(lift, intake, arm)
     }
     override fun run() {
         super.run()

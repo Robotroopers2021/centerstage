@@ -25,8 +25,8 @@ class Arm(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
     }
 
     init {
-        armLeft = hardwareMap.get(Servo::class.java, "servoLeft")
-        armRight = hardwareMap.get(Servo::class.java, "servoRight")
+        armLeft = hardwareMap.get(Servo::class.java, "armLeft")
+        armRight = hardwareMap.get(Servo::class.java, "armRight")
 
 
         //TODO: Create code for wrist servo
@@ -49,6 +49,6 @@ class Arm(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
         armRight.position = lowerPos
     }
 
-    val position: Double
+    var position: Double = 0.0
         get() = analog.voltage/3.3*360
 }
