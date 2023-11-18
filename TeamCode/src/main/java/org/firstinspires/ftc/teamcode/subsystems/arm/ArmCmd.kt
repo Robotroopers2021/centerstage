@@ -3,15 +3,15 @@ package org.firstinspires.ftc.teamcode.subsystems.arm
 import com.arcrobotics.ftclib.command.CommandBase
 import kotlin.math.abs
 
-class LowerCmd(val arm: Arm): CommandBase() {
+class ArmCmd(val arm: Arm, val pos : Double): CommandBase() {
     init {
         addRequirements(arm)
     }
     override fun initialize() {
-        arm.lower()
+        arm.setArmPos(pos)
     }
 
     override fun isFinished(): Boolean {
-        return abs(arm.position - Arm.lowerPos) < 0.01
+        return abs(arm.armLeft.position - pos) < 0.05
     }
 }

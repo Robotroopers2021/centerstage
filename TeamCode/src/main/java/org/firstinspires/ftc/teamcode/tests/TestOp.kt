@@ -9,9 +9,10 @@ import com.arcrobotics.ftclib.command.button.Trigger
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import org.firstinspires.ftc.teamcode.commands.DepositCmd
+import org.firstinspires.ftc.teamcode.commands.HomeCmd
+import org.firstinspires.ftc.teamcode.commands.IntakeSequenceCmd
 import org.firstinspires.ftc.teamcode.subsystems.arm.Arm
-import org.firstinspires.ftc.teamcode.subsystems.arm.LowerCmd
-import org.firstinspires.ftc.teamcode.subsystems.arm.RaiseCmd
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.drive.commands.GamepadDrive
@@ -38,8 +39,6 @@ class TestOp : CommandOpMode() {
         drive = MecanumDriveSubsystem(MecanumDrive(hardwareMap, Pose2d(0.0,0.0,0.0)), false)
         intake = Intake(hardwareMap, telemetry)
         arm = Arm(hardwareMap, telemetry)
-//        val armLower = LowerCmd(arm)
-//        val armRaise = RaiseCmd(arm)
         val intakeCmd = IntakeCmd(intake)
 
         gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
@@ -48,14 +47,18 @@ class TestOp : CommandOpMode() {
         gamepad1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
             .whenPressed(LiftCmd(lift, 0.0))
 
+
         gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_UP)
-            .whenPressed(LowerCmd(arm))
+            .whenPressed(DepositCmd(lift, arm, 0.0, 0.375, 0.48))
+
+        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+            .whenPressed(HomeCmd(lift, arm))
 //
 //        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
 //            .whenPressed(armLower)
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0}
-            .whileActiveContinuous(InstantCommand({intake.intake.power = 0.75}))
+            .whileActiveContinuous(IntakeSequenceCmd(intake, arm))
             .whenInactive(InstantCommand({intake.intake.power = 0.0}))
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
@@ -67,7 +70,7 @@ class TestOp : CommandOpMode() {
     }
     override fun run() {
         super.run()
-        //stelemetry.addData("Arm Position", arm.position)
+        telemetry.addData("Arm Position", arm.position)
         telemetry.addData("Lift Position", lift.liftLeadMotor.currentPosition)
         telemetry.update()
     }
