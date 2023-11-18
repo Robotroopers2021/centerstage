@@ -16,8 +16,6 @@ class Arm(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
 
     var analog: AnalogInput
 
-    var wrist: Servo
-
     //Config values
     companion object{
         @JvmField var lowerPos = 0.0
@@ -28,13 +26,9 @@ class Arm(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
         armLeft = hardwareMap.get(Servo::class.java, "armLeft")
         armRight = hardwareMap.get(Servo::class.java, "armRight")
 
-        armLeft.position = 0.0;
-        armRight.position = 0.0;
+        armLeft.position = 0.02;
+        armRight.position = 0.02;
 
-        //TODO: Create code for wrist servo
-        wrist = hardwareMap.get(Servo::class.java, "wrist")
-
-        wrist.position = 0.0
 
         //TODO: Set directions for servos
         //armLeft.direction = Servo.Direction.REVERSE
@@ -55,10 +49,6 @@ class Arm(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
     fun setArmPos(pos : Double) {
         armLeft.position = pos
         armRight.position = pos
-    }
-
-    fun setWristPos(pos : Double) {
-        wrist.position = pos
     }
 
     var position: Double = 0.0

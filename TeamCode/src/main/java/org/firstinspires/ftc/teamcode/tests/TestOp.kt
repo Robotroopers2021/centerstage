@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.commands.DepositCmd
 import org.firstinspires.ftc.teamcode.commands.HomeCmd
 import org.firstinspires.ftc.teamcode.commands.IntakeSequenceCmd
 import org.firstinspires.ftc.teamcode.subsystems.arm.Arm
+import org.firstinspires.ftc.teamcode.subsystems.arm.ArmCmd
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.drive.commands.GamepadDrive
@@ -21,6 +22,8 @@ import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeCmd
 import org.firstinspires.ftc.teamcode.subsystems.lift.Lift
 import org.firstinspires.ftc.teamcode.subsystems.lift.LiftCmd
 import org.firstinspires.ftc.teamcode.subsystems.lift.LiftConstants
+import org.firstinspires.ftc.teamcode.subsystems.wrist.Wrist
+import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
 
 @TeleOp
 class TestOp : CommandOpMode() {
@@ -28,6 +31,7 @@ class TestOp : CommandOpMode() {
     lateinit var lift : Lift
     lateinit var intake : Intake
     lateinit var arm : Arm
+    lateinit var wrist: Wrist
 
     override fun initialize() {
         var dashboard = FtcDashboard.getInstance()
@@ -36,26 +40,34 @@ class TestOp : CommandOpMode() {
         val gamepad2 = GamepadEx(gamepad2)
 
         lift = Lift(hardwareMap, telemetry)
-        drive = MecanumDriveSubsystem(MecanumDrive(hardwareMap, Pose2d(0.0,0.0,0.0)), false)
+        drive = MecanumDriveSubsystem(hardwareMap, Pose2d(0.0, 0.0, 0.0), false)
         intake = Intake(hardwareMap, telemetry)
         arm = Arm(hardwareMap, telemetry)
+        wrist = Wrist(hardwareMap, telemetry)
+
+        //arm.setArmPos(0.0)
+        //arm.setWristPos(0.0)
         val intakeCmd = IntakeCmd(intake)
+        val armLower = ArmCmd(arm, 0.0)
+        val armRaise = ArmCmd(arm, 0.375)
+
+
 
         gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-            .whenPressed(LiftCmd(lift, LiftConstants.depositHeight))
+            .whenPressed(DepositCmd(lift, arm, wrist,15.0, 0.375, 0.48))
 
         gamepad1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
-            .whenPressed(LiftCmd(lift, 0.0))
+            .whenPressed(HomeCmd(lift, arm, wrist))
 
+        gamepad1.getGamepadButton(GamepadKeys.Button.A)
+            .whenPressed(InstantCommand({intake.servoLeft.position = 1.0
+            intake.servoRight.position = 1.0}))
 
-        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_UP)
-            .whenPressed(DepositCmd(lift, arm, 0.0, 0.375, 0.48))
+        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+            .whenPressed(armLower)
 
-        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
-            .whenPressed(HomeCmd(lift, arm))
-//
-//        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
-//            .whenPressed(armLower)
+        gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+            .whenPressed(armRaise)
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0}
             .whileActiveContinuous(IntakeSequenceCmd(intake, arm))
@@ -71,6 +83,7 @@ class TestOp : CommandOpMode() {
     override fun run() {
         super.run()
         telemetry.addData("Arm Position", arm.position)
+        telemetry.addData("Wrist Position", wrist.wrist.position)
         telemetry.addData("Lift Position", lift.liftLeadMotor.currentPosition)
         telemetry.update()
     }

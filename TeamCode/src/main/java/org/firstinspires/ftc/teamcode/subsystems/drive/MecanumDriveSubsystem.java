@@ -7,16 +7,17 @@ import com.acmerobotics.roadrunner.PoseVelocity2d;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.arcrobotics.ftclib.command.SubsystemBase;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import java.util.List;
 
 public class MecanumDriveSubsystem extends SubsystemBase {
 
-    final MecanumDrive drive;
+    public final MecanumDrive drive;
     private final boolean fieldCentric;
 
-    public MecanumDriveSubsystem(MecanumDrive drive, boolean isFieldCentric) {
-        this.drive = drive;
+    public MecanumDriveSubsystem(HardwareMap hardwareMap, Pose2d startPos, boolean isFieldCentric) {
+        this.drive = new MecanumDrive(hardwareMap, startPos);
         fieldCentric = isFieldCentric;
 
         drive.actionBuilder(new Pose2d(0, 0, 0)).getDispResolution();

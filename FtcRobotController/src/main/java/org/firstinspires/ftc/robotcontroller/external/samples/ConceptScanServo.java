@@ -32,6 +32,7 @@ package org.firstinspires.ftc.robotcontroller.external.samples;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /*
@@ -49,7 +50,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 @TeleOp(name = "Concept: Scan Servo", group = "Concept")
-@Disabled
+//@Disabled
 public class ConceptScanServo extends LinearOpMode {
 
     static final double INCREMENT   = 0.01;     // amount to slew servo each CYCLE_MS cycle
@@ -59,6 +60,8 @@ public class ConceptScanServo extends LinearOpMode {
 
     // Define class members
     Servo   servo;
+
+    AnalogInput analog;
     double  position = (MAX_POS - MIN_POS) / 2; // Start at halfway position
     boolean rampUp = true;
 
@@ -68,7 +71,9 @@ public class ConceptScanServo extends LinearOpMode {
 
         // Connect to servo (Assume Robot Left Hand)
         // Change the text in quotes to match any servo name on your robot.
-        servo = hardwareMap.get(Servo.class, "left_hand");
+        servo = hardwareMap.get(Servo.class, "servo");
+
+        analog = hardwareMap.get(AnalogInput.class, "analog");
 
         // Wait for the start button
         telemetry.addData(">", "Press Start to scan Servo." );
@@ -99,6 +104,7 @@ public class ConceptScanServo extends LinearOpMode {
 
             // Display the current value
             telemetry.addData("Servo Position", "%5.2f", position);
+            telemetry.addData("Servo Analog", "%5.2f", analog.getVoltage()/3.3*360);
             telemetry.addData(">", "Press Stop to end test." );
             telemetry.update();
 

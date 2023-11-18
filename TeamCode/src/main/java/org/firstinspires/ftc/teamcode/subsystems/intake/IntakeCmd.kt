@@ -1,10 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems.intake
 
 import com.arcrobotics.ftclib.command.CommandBase
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit
-import org.firstinspires.ftc.teamcode.subsystems.arm.Arm
-import org.firstinspires.ftc.teamcode.subsystems.arm.WristCmd
 
 class IntakeCmd(val intake: Intake): CommandBase() {
     init {
