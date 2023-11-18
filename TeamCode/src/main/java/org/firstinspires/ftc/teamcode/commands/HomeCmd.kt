@@ -21,7 +21,7 @@ class HomeCmd(lift: Lift, arm: Arm, wrist: Wrist) : SequentialCommandGroup() {
             ),
             WristCmd(wrist, 0.0),
             ParallelCommandGroup(
-            ArmCmd(arm, 0.02),
+            ArmCmd(arm, 0.01),
             SequentialCommandGroup(
                 WaitCommand(90),
                 WristCmd(wrist, 0.11),

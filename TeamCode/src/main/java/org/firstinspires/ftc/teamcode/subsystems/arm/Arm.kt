@@ -26,8 +26,8 @@ class Arm(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
         armLeft = hardwareMap.get(Servo::class.java, "armLeft")
         armRight = hardwareMap.get(Servo::class.java, "armRight")
 
-        armLeft.position = 0.02;
-        armRight.position = 0.02;
+        armLeft.position = 0.01;
+        armRight.position = 0.01;
 
 
         //TODO: Set directions for servos
