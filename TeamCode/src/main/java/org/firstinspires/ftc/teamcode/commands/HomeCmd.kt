@@ -13,11 +13,13 @@ import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
 class HomeCmd(lift: Lift, arm: Arm, wrist: Wrist) : SequentialCommandGroup() {
     init {
         addCommands(
-            WristCmd(wrist, 0.05),
-            WaitCommand(350),
             ParallelCommandGroup(
-                ArmCmd(arm, 0.215),
-                LiftCmd(lift, 0.0)
+                WristCmd(wrist, 0.05),
+                LiftCmd(lift, 0.0),
+                SequentialCommandGroup(
+                    WaitCommand(350), //TODO need to tune delay
+                    ArmCmd(arm, 0.215)
+                )
             ),
             WristCmd(wrist, 0.0),
             ParallelCommandGroup(
