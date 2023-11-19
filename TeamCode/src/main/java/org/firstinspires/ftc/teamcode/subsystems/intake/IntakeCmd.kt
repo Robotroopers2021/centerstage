@@ -12,6 +12,13 @@ class IntakeCmd(val intake: Intake): CommandBase() {
         intake.on()
     }
 
+    override fun execute() {
+        if(intake.colorLeft.getDistance(DistanceUnit.INCH)<1.0)
+            intake.servoLeft.position = 0.25
+        if(intake.colorRight.getDistance(DistanceUnit.INCH)<1.0)
+            intake.servoRight.position = 0.25
+    }
+
     override fun isFinished(): Boolean {
         return intake.colorLeft.getDistance(DistanceUnit.INCH) < 1.0 && intake.colorRight.getDistance(DistanceUnit.INCH) < 1.0
     }
