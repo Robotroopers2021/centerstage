@@ -17,16 +17,16 @@ class HomeCmd(lift: Lift, arm: Arm, wrist: Wrist) : SequentialCommandGroup() {
                 WristCmd(wrist, 0.05),
                 LiftCmd(lift, 0.0),
                 SequentialCommandGroup(
-                    WaitCommand(350), //TODO need to tune delay
+                    WaitCommand(275), //TODO need to tune delay
                     ArmCmd(arm, 0.215)
                 )
             ),
             WristCmd(wrist, 0.0),
             ParallelCommandGroup(
-            ArmCmd(arm, 0.01),
+            ArmCmd(arm, 0.03),
             SequentialCommandGroup(
-                WaitCommand(90),
-                WristCmd(wrist, 0.11),
+                WaitCommand(65),
+                WristCmd(wrist, 0.09),
             )
             )
         )

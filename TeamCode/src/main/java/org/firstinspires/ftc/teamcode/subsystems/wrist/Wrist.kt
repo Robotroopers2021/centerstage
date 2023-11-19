@@ -23,7 +23,7 @@ class Wrist(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
         //TODO: Create code for wrist servo
         wrist = hardwareMap.get(Servo::class.java, "wrist")
 
-        wrist.position = 0.11
+        wrist.position = 0.09
 
         //TODO: Set directions for servos
         //armLeft.direction = Servo.Direction.REVERSE

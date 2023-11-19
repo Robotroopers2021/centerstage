@@ -70,7 +70,7 @@ class TestOp : CommandOpMode() {
             .whenPressed(armRaise)
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0}
-            .whileActiveContinuous(IntakeSequenceCmd(intake, arm))
+            .whileActiveContinuous(IntakeSequenceCmd(intake, wrist, arm))
             .whenInactive(InstantCommand({intake.intake.power = 0.0}))
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
