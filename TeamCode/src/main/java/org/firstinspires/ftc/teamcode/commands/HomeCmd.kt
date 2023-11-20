@@ -5,28 +5,31 @@ import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import com.arcrobotics.ftclib.command.WaitCommand
 import org.firstinspires.ftc.teamcode.subsystems.arm.Arm
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmCmd
+import org.firstinspires.ftc.teamcode.subsystems.arm.ArmConstants
 import org.firstinspires.ftc.teamcode.subsystems.lift.Lift
 import org.firstinspires.ftc.teamcode.subsystems.lift.LiftCmd
+import org.firstinspires.ftc.teamcode.subsystems.lift.LiftConstants
 import org.firstinspires.ftc.teamcode.subsystems.wrist.Wrist
 import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
+import org.firstinspires.ftc.teamcode.subsystems.wrist.WristConstants
 
 class HomeCmd(lift: Lift, arm: Arm, wrist: Wrist) : SequentialCommandGroup() {
     init {
         addCommands(
             ParallelCommandGroup(
-                WristCmd(wrist, 0.05),
-                LiftCmd(lift, 0.0),
+                WristCmd(wrist, WristConstants.middlePosition),
+                LiftCmd(lift, LiftConstants.zeroPosition),
                 SequentialCommandGroup(
-                    WaitCommand(350), //TODO need to tune delay
-                    ArmCmd(arm, 0.215)
+                    WaitCommand(275),
+                    ArmCmd(arm, ArmConstants.middlePosition)
                 )
             ),
-            WristCmd(wrist, 0.0),
+            WristCmd(wrist, WristConstants.zeroPosition),
             ParallelCommandGroup(
-            ArmCmd(arm, 0.01),
+            ArmCmd(arm, ArmConstants.intakePosition),
             SequentialCommandGroup(
-                WaitCommand(90),
-                WristCmd(wrist, 0.11),
+                WaitCommand(65),
+                WristCmd(wrist, WristConstants.intakePosition),
             )
             )
         )

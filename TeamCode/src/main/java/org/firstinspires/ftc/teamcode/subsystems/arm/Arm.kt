@@ -11,39 +11,27 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 @Config
 class Arm(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
     var armLeft: Servo
-
     var armRight: Servo
-
     var analog: AnalogInput
-
-    //Config values
-    companion object{
-        @JvmField var lowerPos = 0.0
-        @JvmField var raisePos = 0.375
-    }
 
     init {
         armLeft = hardwareMap.get(Servo::class.java, "armLeft")
         armRight = hardwareMap.get(Servo::class.java, "armRight")
 
-        armLeft.position = 0.01;
-        armRight.position = 0.01;
-
-
-        //TODO: Set directions for servos
-        //armLeft.direction = Servo.Direction.REVERSE
+        armLeft.position = ArmConstants.intakePosition
+        armRight.position = ArmConstants.intakePosition
 
         analog = hardwareMap.get(AnalogInput::class.java, "armAnalog")
     }
 
     fun raise(){
-        armLeft.position = raisePos
-        armRight.position = raisePos  //1-raisePos
+        armLeft.position = ArmConstants.depositPosition
+        armRight.position = ArmConstants.depositPosition
     }
 
     fun lower(){
-        armLeft.position = lowerPos
-        armRight.position = lowerPos
+        armLeft.position = ArmConstants.zeroPosition
+        armRight.position = ArmConstants.zeroPosition
     }
 
     fun setArmPos(pos : Double) {
