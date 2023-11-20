@@ -13,21 +13,9 @@ class Wrist(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
 
     var wrist: Servo
 
-    //Config values
-    companion object{
-        @JvmField var lowerPos = 0.0
-        @JvmField var raisePos = 0.375
-    }
-
     init {
-        //TODO: Create code for wrist servo
         wrist = hardwareMap.get(Servo::class.java, "wrist")
-
-        wrist.position = 0.09
-
-        //TODO: Set directions for servos
-        //armLeft.direction = Servo.Direction.REVERSE
-
+        wrist.position = WristConstants.intakePosition
     }
 
     fun setWristPos(pos : Double) {

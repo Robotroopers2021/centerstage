@@ -14,6 +14,7 @@ import org.firstinspires.ftc.teamcode.commands.HomeCmd
 import org.firstinspires.ftc.teamcode.commands.IntakeSequenceCmd
 import org.firstinspires.ftc.teamcode.subsystems.arm.Arm
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmCmd
+import org.firstinspires.ftc.teamcode.subsystems.arm.ArmConstants
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.drive.commands.GamepadDrive
@@ -24,6 +25,7 @@ import org.firstinspires.ftc.teamcode.subsystems.lift.LiftCmd
 import org.firstinspires.ftc.teamcode.subsystems.lift.LiftConstants
 import org.firstinspires.ftc.teamcode.subsystems.wrist.Wrist
 import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
+import org.firstinspires.ftc.teamcode.subsystems.wrist.WristConstants
 
 @TeleOp
 class TestOp : CommandOpMode() {
@@ -45,16 +47,14 @@ class TestOp : CommandOpMode() {
         arm = Arm(hardwareMap, telemetry)
         wrist = Wrist(hardwareMap, telemetry)
 
-        //arm.setArmPos(0.0)
-        //arm.setWristPos(0.0)
         val intakeCmd = IntakeCmd(intake)
-        val armLower = ArmCmd(arm, 0.0)
-        val armRaise = ArmCmd(arm, 0.375)
+        val armLower = ArmCmd(arm, ArmConstants.zeroPosition)
+        val armRaise = ArmCmd(arm, ArmConstants.depositPosition)
 
 
 
         gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-            .whenPressed(DepositCmd(lift, arm, wrist,15.0, 0.375, 0.48))
+            .whenPressed(DepositCmd(lift, arm, wrist, LiftConstants.depositHeight, ArmConstants.depositPosition, WristConstants.depositPosition))
 
         gamepad1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
             .whenPressed(HomeCmd(lift, arm, wrist))

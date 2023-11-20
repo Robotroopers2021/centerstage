@@ -8,11 +8,12 @@ import org.firstinspires.ftc.teamcode.subsystems.lift.Lift
 import org.firstinspires.ftc.teamcode.subsystems.lift.LiftCmd
 import org.firstinspires.ftc.teamcode.subsystems.wrist.Wrist
 import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
+import org.firstinspires.ftc.teamcode.subsystems.wrist.WristConstants
 
 class DepositCmd(lift: Lift, arm: Arm, wrist: Wrist, liftPos : Double, armPos : Double, wristPos : Double) : SequentialCommandGroup() {
     init {
         addCommands(
-            WristCmd(wrist, 0.0),
+            WristCmd(wrist, WristConstants.zeroPosition),
             ArmCmd(arm, armPos),
             ParallelCommandGroup(
             LiftCmd(lift, liftPos),
