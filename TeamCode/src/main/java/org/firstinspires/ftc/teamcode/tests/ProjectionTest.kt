@@ -1,28 +1,39 @@
 package org.firstinspires.ftc.teamcode.tests
 
+import android.util.Log
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.TrajectoryBuilder
+import com.acmerobotics.roadrunner.Vector2d
 import com.arcrobotics.ftclib.command.CommandOpMode
+import com.arcrobotics.ftclib.command.InstantCommand
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import org.firstinspires.ftc.teamcode.subsystems.cv.AprilTag
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.drive.ProjectionTrajectoryFollowerCommand
+import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase
+import kotlin.math.PI
 
 @Config
 @Autonomous
 class ProjectionTest : CommandOpMode() {
     private lateinit var drive: MecanumDriveSubsystem
     override fun initialize() {
-        drive = MecanumDriveSubsystem(hardwareMap, Pose2d(0.0, 0.0, 0.0), false)
-
         val cv = AprilTag(hardwareMap, this)
-        var channel = cv.channel
+        val startPos = Pose2d(cv.getPose(9)!!.position+Vector2d(
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(0).toDouble(),
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(1).toDouble(),
+        ), PI)
+        Log.d("cvPose", startPos.toString())
+        drive = MecanumDriveSubsystem(hardwareMap, startPos, false)
 
         waitForStart()
         schedule(ProjectionTrajectoryFollowerCommand(drive, TrajectoryBuilder(
-            Pose2d(0.0, 0.0, 0.0), 1e-6, 0.0,
+            startPos, 1e-6, 0.0,
             drive.drive.defaultVelConstraint, drive.drive.defaultAccelConstraint, 0.25, 0.1
-        ).lineToX(5.0).build()[1], 5, cv))
+        ).splineTo(Vector2d(
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(0).toDouble()+5,
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(1).toDouble(),
+        ),0.0).build()[0], 9, cv), InstantCommand({cv.visionPortal.close()}))
     }
 }

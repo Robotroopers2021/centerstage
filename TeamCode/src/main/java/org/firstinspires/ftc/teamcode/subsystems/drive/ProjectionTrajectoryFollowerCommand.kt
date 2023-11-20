@@ -1,16 +1,19 @@
 package org.firstinspires.ftc.teamcode.subsystems.drive
 
+import android.util.Log
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.DisplacementTrajectory
 import com.acmerobotics.roadrunner.HolonomicController
 import com.acmerobotics.roadrunner.MotorFeedforward
+import com.acmerobotics.roadrunner.TimeTrajectory
 import com.acmerobotics.roadrunner.Trajectory
 import com.acmerobotics.roadrunner.Vector2d
 import com.acmerobotics.roadrunner.ftc.FlightRecorder.write
 import com.arcrobotics.ftclib.command.CommandBase
 import org.firstinspires.ftc.teamcode.subsystems.cv.AprilTag
+import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase
 
 
 class ProjectionTrajectoryFollowerCommand(var drive: MecanumDriveSubsystem, t: Trajectory, val targetID: Int, private val aprilTag: AprilTag) :
@@ -39,7 +42,11 @@ class ProjectionTrajectoryFollowerCommand(var drive: MecanumDriveSubsystem, t: T
         p.fieldOverlay().operations.addAll(c.operations)
 
         val robotVelRobot = drive.updatePoseEstimate()
-        cvPose = aprilTag.getPose(targetID)!!.position
+        cvPose = aprilTag.getPose(targetID)!!.position+Vector2d(
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(0).toDouble(),
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(1).toDouble(),
+        )
+        Log.d("cvPose", cvPose.toString())
         disp = dt.project(cvPose, disp)
         val poseTarget = dt[disp]
         var pose = drive.poseEstimate

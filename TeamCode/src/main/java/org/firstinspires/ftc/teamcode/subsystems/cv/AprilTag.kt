@@ -50,8 +50,8 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, var mode: Mode = 
         .setDrawCubeProjection(false)
         .setDrawTagOutline(false)
         .setDrawTagID(false)
-        .setLensIntrinsics(723.5042, 725.4909, 404.5462, 313.1578) //800x600
-        //.setLensIntrinsics(292.4088, 292.7053, 159.1876, 124.7638) //320x240
+        //.setLensIntrinsics(723.5042, 725.4909, 404.5462, 313.1578) //800x600
+        .setLensIntrinsics(292.4088, 292.7053, 159.1876, 124.7638) //320x240
         .setOutputUnits(DistanceUnit.INCH, AngleUnit.RADIANS)
         .setNumThreads(6)
         .build()
@@ -70,13 +70,13 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, var mode: Mode = 
         val builder = VisionPortal.Builder()
 
         webcamFront = hardwareMap.get(WebcamName::class.java, "Webcam 1")
-        webcamBack = hardwareMap.get(WebcamName::class.java, "Webcam 2")
+        webcamBack = hardwareMap.get(WebcamName::class.java, "Webcam 1")
         val switchableCamera: CameraName = ClassFactory.getInstance()
             .cameraManager.nameForSwitchableCamera(webcamFront, webcamBack)
         builder.setCamera(switchableCamera)
 
-        //builder.setCameraResolution(Size(320, 240))
-        builder.setCameraResolution(Size(800, 600))
+        builder.setCameraResolution(Size(320, 240))
+        //builder.setCameraResolution(Size(800, 600))
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
         //aprilTag.setDecimation(10F)
         builder.addProcessor(aprilTag)
