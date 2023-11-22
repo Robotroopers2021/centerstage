@@ -15,16 +15,13 @@ import org.firstinspires.ftc.teamcode.commands.IntakeSequenceCmd
 import org.firstinspires.ftc.teamcode.subsystems.arm.Arm
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmCmd
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmConstants
-import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDriveSubsystem
 import org.firstinspires.ftc.teamcode.subsystems.drive.commands.GamepadDrive
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake
 import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeCmd
 import org.firstinspires.ftc.teamcode.subsystems.lift.Lift
-import org.firstinspires.ftc.teamcode.subsystems.lift.LiftCmd
 import org.firstinspires.ftc.teamcode.subsystems.lift.LiftConstants
 import org.firstinspires.ftc.teamcode.subsystems.wrist.Wrist
-import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
 import org.firstinspires.ftc.teamcode.subsystems.wrist.WristConstants
 
 @TeleOp
@@ -70,7 +67,7 @@ class TestOp : CommandOpMode() {
             .whenPressed(armRaise)
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0}
-            .whileActiveContinuous(IntakeSequenceCmd(intake, wrist, arm))
+            .whileActiveContinuous(IntakeSequenceCmd(intake, wrist))
             .whenInactive(InstantCommand({intake.intake.power = 0.0}))
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.RIGHT_TRIGGER) > 0.0}
