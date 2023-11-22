@@ -40,6 +40,5 @@ class Lift(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
         mTelemetry.addData("Lift Pos", liftLeadMotor.currentPosition)
         mTelemetry.addData("Lift Target Pos", LiftCmd.targetPos*(LiftConstants.ticksPerInch))
         mTelemetry.addData("Lift Power", liftLeadMotor.power)
-        mTelemetry.update()
     }
 }
