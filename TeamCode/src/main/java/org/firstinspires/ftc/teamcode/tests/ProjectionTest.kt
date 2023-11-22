@@ -18,12 +18,14 @@ import kotlin.math.PI
 @Autonomous
 class ProjectionTest : CommandOpMode() {
     private lateinit var drive: MecanumDriveSubsystem
+    val target = 10
     override fun initialize() {
-        val cv = AprilTag(hardwareMap, this)
-        val startPos = Pose2d(cv.getPose(9)!!.position+Vector2d(
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(0).toDouble(),
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(1).toDouble(),
-        ), PI)
+        val cv = AprilTag(hardwareMap, this, telemetry)
+        while(cv.getPose(target) == null){}
+        val startPos = Pose2d(cv.getPose(target)!!.position+Vector2d(
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0).toDouble(),
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(1).toDouble(),
+        ), 0.0)
         Log.d("cvPose", startPos.toString())
         drive = MecanumDriveSubsystem(hardwareMap, startPos, false)
 
@@ -32,8 +34,8 @@ class ProjectionTest : CommandOpMode() {
             startPos, 1e-6, 0.0,
             drive.drive.defaultVelConstraint, drive.drive.defaultAccelConstraint, 0.25, 0.1
         ).splineTo(Vector2d(
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(0).toDouble()+5,
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(1).toDouble(),
-        ),0.0).build()[0], 9, cv), InstantCommand({cv.visionPortal.close()}))
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0).toDouble()+5,
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(1).toDouble(),
+        ),0.0).build()[0], target, cv), InstantCommand({cv.visionPortal.close()}))
     }
 }

@@ -7,6 +7,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.DisplacementTrajectory
 import com.acmerobotics.roadrunner.HolonomicController
 import com.acmerobotics.roadrunner.MotorFeedforward
+import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.TimeTrajectory
 import com.acmerobotics.roadrunner.Trajectory
 import com.acmerobotics.roadrunner.Vector2d
@@ -42,14 +43,22 @@ class ProjectionTrajectoryFollowerCommand(var drive: MecanumDriveSubsystem, t: T
         p.fieldOverlay().operations.addAll(c.operations)
 
         val robotVelRobot = drive.updatePoseEstimate()
-        cvPose = aprilTag.getPose(targetID)!!.position+Vector2d(
+        while(aprilTag.getPose(targetID) == null){}
+        cvPose = aprilTag.getPose(targetID)!!.position/*+Vector2d(
             AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(0).toDouble(),
             AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(1).toDouble(),
-        )
+        )*/
         Log.d("cvPose", cvPose.toString())
+        cvPose += Vector2d(
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(targetID).fieldPosition.get(0)
+                .toDouble(),
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(targetID).fieldPosition.get(1)
+                .toDouble(),
+        )
+
         disp = dt.project(cvPose, disp)
         val poseTarget = dt[disp]
-        var pose = drive.poseEstimate
+        val pose = drive.poseEstimate
         val cmd = hc.compute(poseTarget, pose, robotVelRobot)
 
         val wheelVels = drive.drive.kinematics.inverse(cmd)
@@ -85,6 +94,9 @@ class ProjectionTrajectoryFollowerCommand(var drive: MecanumDriveSubsystem, t: T
 
         c.setStroke("#3F51B5")
         MecanumDrive.drawRobot(c, pose)
+
+        c.setStroke("#FFA500")
+        MecanumDrive.drawRobot(c, Pose2d(cvPose, pose.heading))
 
         dash.sendTelemetryPacket(p)
     }

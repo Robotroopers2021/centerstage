@@ -14,6 +14,7 @@ import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.firstinspires.ftc.robotcore.external.ClassFactory
+import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName
 import org.firstinspires.ftc.robotcore.external.hardware.camera.controls.ExposureControl
@@ -25,7 +26,7 @@ import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit
 
 @OptIn(DelicateCoroutinesApi::class)
-class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, var mode: Mode = Mode.NORMAL) {
+class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Telemetry, var mode: Mode = Mode.NORMAL) {
     enum class Mode {
         NORMAL,
         ASYNC
@@ -125,11 +126,54 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, var mode: Mode = 
     //TODO: Make the pose offset calculation work
     //Gets pose offset from tag to center of robot
     fun getPose(id: Int): Pose2d? {
+        Log.d("cvPose", "CALLED GET POSE")
         when (mode) {
             Mode.NORMAL -> {
                 val detectMap = buildMap {
                     aprilTag.detections.forEach {
                         put(it.id, Pose2d(it.ftcPose.x, -it.ftcPose.y, it.ftcPose.yaw))
+                        if (it.metadata != null) {
+                            telemetry.addLine(
+                                String.format(
+                                    "\n==== (ID %d) %s",
+                                    it.id,
+                                    it.metadata.name
+                                )
+                            )
+                            telemetry.addLine(
+                                String.format(
+                                    "XYZ %6.1f %6.1f %6.1f  (inch)",
+                                    it.ftcPose.x,
+                                    it.ftcPose.y,
+                                    it.ftcPose.z
+                                )
+                            )
+                            telemetry.addLine(
+                                String.format(
+                                    "PRY %6.1f %6.1f %6.1f  (deg)",
+                                    it.ftcPose.pitch,
+                                    it.ftcPose.roll,
+                                    it.ftcPose.yaw
+                                )
+                            )
+                            telemetry.addLine(
+                                String.format(
+                                    "RBE %6.1f %6.1f %6.1f  (inch, deg, deg)",
+                                    it.ftcPose.range,
+                                    it.ftcPose.bearing,
+                                    it.ftcPose.elevation
+                                )
+                            )
+                        } else {
+                            telemetry.addLine(String.format("\n==== (ID %d) Unknown", it.id))
+                            telemetry.addLine(
+                                String.format(
+                                    "Center %6.0f %6.0f   (pixels)",
+                                    it.center.x,
+                                    it.center.y
+                                )
+                            )
+                        }
                     }
                 }
                 return when (currentCamera) {
