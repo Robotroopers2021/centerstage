@@ -16,17 +16,19 @@ public class MeepMeepRR1 {
                 .setDimensions(14.252, 14.252)
                 .build();
 
-        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(11.0, 62.5, Math.toRadians(90.0)))
+        myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(12.0, 62.5, Math.toRadians(90.0)))
                         .setReversed(true)
                 .lineToYLinearHeading(35.5, Math.toRadians(180.0))
-                .lineToYLinearHeading(48.0, Math.toRadians(90.0))
+                .strafeTo(new Vector2d(7.0, 34.5))
+                .strafeTo(new Vector2d(12.0, 34.5))
+                .strafeToLinearHeading(new Vector2d(12.0, 48.0), Math.toRadians(90.0))
                 .splineToLinearHeading(new Pose2d(48.0, 35.5, Math.toRadians(180.0)), Math.toRadians(270.0))
-                        .setReversed(false)
-                .splineToConstantHeading(new Vector2d(24.0, 11.5), Math.toRadians(180.0))
-                .strafeToConstantHeading(new Vector2d(-60.0, 11.5))
-                        .setReversed(true)
-                .strafeToConstantHeading(new Vector2d(24.0, 11.5))
-                .splineToConstantHeading(new Vector2d(48.0, 35.5), Math.toRadians(90.0))
+//                        .setReversed(false)
+//                .splineToConstantHeading(new Vector2d(24.0, 11.5), Math.toRadians(180.0))
+//                .strafeToConstantHeading(new Vector2d(-60.0, 11.5))
+//                        .setReversed(true)
+//                .strafeToConstantHeading(new Vector2d(24.0, 11.5))
+//                .splineToConstantHeading(new Vector2d(48.0, 35.5), Math.toRadians(90.0))
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)

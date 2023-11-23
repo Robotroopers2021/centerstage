@@ -10,6 +10,7 @@ import com.acmerobotics.roadrunner.ftc.*
 import com.arcrobotics.ftclib.command.CommandOpMode
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
 import com.arcrobotics.ftclib.command.SubsystemBase
+import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.teamcode.subsystems.drive.Localizer
@@ -23,27 +24,54 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.commands.TrajectoryFollow
 class AutoTest : CommandOpMode() {
     private lateinit var drive: MecanumDriveSubsystem
     override fun initialize() {
-        val startPos = Pose2d(11.0, 62.5, Math.toRadians(90.0))
+        val startPos = Pose2d(12.0, 62.5, Math.toRadians(90.0))
         drive = MecanumDriveSubsystem(hardwareMap, startPos, false)
         drive.poseEstimate = startPos
 
-        val spike = drive.drive.actionBuilder(drive.poseEstimate)
+        val spikeLeft = drive.drive.actionBuilder(drive.poseEstimate)
             .setReversed(true)
-            .lineToYLinearHeading(35.5, Math.toRadians(180.0))
-            .lineToYLinearHeading(48.0, Math.toRadians(90.0))
-            .splineToLinearHeading(Pose2d(48.0, 35.5, Math.toRadians(180.0)), Math.toRadians(270.0))
+            .strafeToLinearHeading(Vector2d(13.0, 35.5), Math.toRadians(180.0))
+            .strafeTo(Vector2d(7.0, 36.5))
+            .waitSeconds(1.0)
+            .strafeTo(Vector2d(13.0, 35.5))
+            .strafeToLinearHeading(Vector2d(13.0, 48.0), Math.toRadians(90.0))
+            .splineToLinearHeading(Pose2d(47.0, 43.0, Math.toRadians(180.0)), Math.toRadians(270.0))
+            //CYCLE 1
             .setReversed(false)
-            .splineToConstantHeading(Vector2d(24.0, 11.5), Math.toRadians(180.0))
-            .strafeToConstantHeading(Vector2d(-60.0, 11.5))
+            .splineToConstantHeading(Vector2d(24.0, 6.5), Math.toRadians(180.0))
+            .strafeToConstantHeading(Vector2d(-56.0, 6.5))
+            .waitSeconds(1.0)
             .setReversed(true)
-            .strafeToConstantHeading(Vector2d(24.0, 11.5))
-            .splineToConstantHeading(Vector2d(48.0, 35.5), Math.toRadians(90.0))
+            .strafeToConstantHeading(Vector2d(24.0, 6.5))
+            .splineToConstantHeading(Vector2d(48.0, 36.5), Math.toRadians(90.0))
+            //CYCLE 2
+            .setReversed(false)
+            .splineToConstantHeading(Vector2d(24.0, 6.5), Math.toRadians(180.0))
+            .strafeToConstantHeading(Vector2d(-56.0, 6.5))
+            .waitSeconds(1.0)
+            .setReversed(true)
+            .strafeToConstantHeading(Vector2d(24.0, 6.5))
+            .splineToConstantHeading(Vector2d(48.0, 36.5), Math.toRadians(90.0))
+            .build()
+
+        val spikeMiddle = drive.drive.actionBuilder(drive.poseEstimate)
+            .setReversed(true)
+            .strafeToLinearHeading(Vector2d(19.0, 43.5), Math.toRadians(90.0))
+            .waitSeconds(1.0)
+            .splineToLinearHeading(Pose2d(47.0, 36.0, Math.toRadians(180.0)), Math.toRadians(270.0))
+            .build()
+
+        val spikeRight = drive.drive.actionBuilder(drive.poseEstimate)
+            .setReversed(true)
+            .strafeToLinearHeading(Vector2d(17.0, 36.0), Math.toRadians(0.0))
+            .waitSeconds(1.0)
+            .splineToLinearHeading(Pose2d(47.0, 29.0, Math.toRadians(180.0)), Math.toRadians(270.0))
             .build()
 
         waitForStart()
         schedule(
             SequentialCommandGroup(
-                TrajectoryFollowerCommand(drive, spike),
+                TrajectoryFollowerCommand(drive, spikeLeft),
             )
         )
     }
