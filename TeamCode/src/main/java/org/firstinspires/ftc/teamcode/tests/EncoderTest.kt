@@ -10,27 +10,26 @@ import com.qualcomm.robotcore.hardware.DcMotorEx
 @Config
 @Autonomous
 class EncoderTest : LinearOpMode() {
-    @OptIn(ExperimentalStdlibApi::class)
     override fun runOpMode() {
-        var par0 = OverflowEncoder(
+        val par0 = OverflowEncoder(
             RawEncoder(
-                hardwareMap.get<DcMotorEx>(
-                    DcMotorEx::class.java,
-                    "leftFront"
-                )
-            )
-        )
-        var par1 = OverflowEncoder(
-            RawEncoder(
-                hardwareMap.get<DcMotorEx>(
+                hardwareMap.get(
                     DcMotorEx::class.java,
                     "rightFront"
                 )
             )
         )
-        var perp = OverflowEncoder(
+        val par1 = OverflowEncoder(
             RawEncoder(
-                hardwareMap.get<DcMotorEx>(
+                hardwareMap.get(
+                    DcMotorEx::class.java,
+                    "leftFront"
+                )
+            )
+        )
+        val perp = OverflowEncoder(
+            RawEncoder(
+                hardwareMap.get(
                     DcMotorEx::class.java,
                     "rightBack"
                 )

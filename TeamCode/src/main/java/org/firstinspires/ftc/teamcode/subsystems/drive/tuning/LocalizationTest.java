@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.drive.TankDrive;
+import org.firstinspires.ftc.teamcode.subsystems.drive.ThreeDeadWheelLocalizer;
 import org.robotroopers.robolog.RoboLog;
 
 public class LocalizationTest extends LinearOpMode {
@@ -15,12 +16,8 @@ public class LocalizationTest extends LinearOpMode {
         if (TuningOpModes.DRIVE_CLASS.equals(MecanumDrive.class)) {
             MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
 
-            RoboLog.INSTANCE.registerBattery(hardwareMap.voltageSensor.iterator().next());
-            RoboLog.INSTANCE.registerMotor(drive.leftFront);
-
             waitForStart();
 
-            RoboLog.INSTANCE.start();
             while (opModeIsActive()) {
                 drive.setDrivePowers(new PoseVelocity2d(
                         new Vector2d(
@@ -35,6 +32,9 @@ public class LocalizationTest extends LinearOpMode {
                 telemetry.addData("x", drive.pose.position.x);
                 telemetry.addData("y", drive.pose.position.y);
                 telemetry.addData("heading", drive.pose.heading);
+                telemetry.addData("par0", ((ThreeDeadWheelLocalizer)(drive.localizer)).par0.getPositionAndVelocity().position);
+                telemetry.addData("par1", ((ThreeDeadWheelLocalizer)(drive.localizer)).par1.getPositionAndVelocity().position);
+                telemetry.addData("perp", ((ThreeDeadWheelLocalizer)(drive.localizer)).perp.getPositionAndVelocity().position);
                 telemetry.update();
             }
             RoboLog.INSTANCE.stop();
