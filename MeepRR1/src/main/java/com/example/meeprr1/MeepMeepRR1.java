@@ -17,12 +17,10 @@ public class MeepMeepRR1 {
                 .build();
 
         myBot.runAction(myBot.getDrive().actionBuilder(new Pose2d(12.0, 62.5, Math.toRadians(90.0)))
-                        .setReversed(true)
-                .lineToYLinearHeading(35.5, Math.toRadians(180.0))
-                .strafeTo(new Vector2d(7.0, 34.5))
-                .strafeTo(new Vector2d(12.0, 34.5))
-                .strafeToLinearHeading(new Vector2d(12.0, 48.0), Math.toRadians(90.0))
-                .splineToLinearHeading(new Pose2d(48.0, 35.5, Math.toRadians(180.0)), Math.toRadians(270.0))
+                .setReversed(true)
+                .strafeToLinearHeading(new Vector2d(17.0, 36.0), Math.toRadians(0.0))
+                .waitSeconds(1.0)
+                .strafeToLinearHeading(new Vector2d(47.0, 29.0), Math.toRadians(180.0))
 //                        .setReversed(false)
 //                .splineToConstantHeading(new Vector2d(24.0, 11.5), Math.toRadians(180.0))
 //                .strafeToConstantHeading(new Vector2d(-60.0, 11.5))

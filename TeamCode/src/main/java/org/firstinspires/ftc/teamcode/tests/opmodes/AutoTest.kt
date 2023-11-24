@@ -30,12 +30,9 @@ class AutoTest : CommandOpMode() {
 
         val spikeLeft = drive.drive.actionBuilder(drive.poseEstimate)
             .setReversed(true)
-            .strafeToLinearHeading(Vector2d(13.0, 35.5), Math.toRadians(180.0))
-            .strafeTo(Vector2d(7.0, 36.5))
+            .strafeToLinearHeading(Vector2d(41.0, 36.0), Math.toRadians(0.0))
             .waitSeconds(1.0)
-            .strafeTo(Vector2d(13.0, 35.5))
-            .strafeToLinearHeading(Vector2d(13.0, 48.0), Math.toRadians(90.0))
-            .splineToLinearHeading(Pose2d(47.0, 43.0, Math.toRadians(180.0)), Math.toRadians(270.0))
+            .strafeToLinearHeading(Vector2d(47.0, 43.0), Math.toRadians(180.0))
             //CYCLE 1
             .setReversed(false)
             .splineToConstantHeading(Vector2d(24.0, 6.5), Math.toRadians(180.0))
@@ -65,7 +62,7 @@ class AutoTest : CommandOpMode() {
             .setReversed(true)
             .strafeToLinearHeading(Vector2d(17.0, 36.0), Math.toRadians(0.0))
             .waitSeconds(1.0)
-            .splineToLinearHeading(Pose2d(47.0, 29.0, Math.toRadians(180.0)), Math.toRadians(270.0))
+            .strafeToLinearHeading(Vector2d(47.0, 29.0), Math.toRadians(180.0))
             .build()
 
         waitForStart()
