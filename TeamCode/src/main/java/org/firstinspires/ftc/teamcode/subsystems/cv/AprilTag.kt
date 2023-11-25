@@ -131,6 +131,7 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
             Mode.NORMAL -> {
                 val detectMap = buildMap {
                     aprilTag.detections.forEach {
+                        Log.d("cvPose", "Detection is found")
                         put(it.id, Pose2d(it.ftcPose.x, -it.ftcPose.y, it.ftcPose.yaw))
                         if (it.metadata != null) {
                             telemetry.addLine(

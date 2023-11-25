@@ -18,7 +18,7 @@ import kotlin.math.PI
 @Autonomous
 class ProjectionTest : CommandOpMode() {
     private lateinit var drive: MecanumDriveSubsystem
-    val target = 10
+    val target = 5
     override fun initialize() {
         val cv = AprilTag(hardwareMap, this, telemetry)
         while(cv.getPose(target) == null){}
