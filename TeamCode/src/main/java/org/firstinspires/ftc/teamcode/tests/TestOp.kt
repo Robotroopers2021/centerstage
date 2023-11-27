@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeCmd
 import org.firstinspires.ftc.teamcode.subsystems.lift.Lift
 import org.firstinspires.ftc.teamcode.subsystems.lift.LiftConstants
 import org.firstinspires.ftc.teamcode.subsystems.wrist.Wrist
+import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
 import org.firstinspires.ftc.teamcode.subsystems.wrist.WristConstants
 
 @TeleOp
@@ -57,14 +58,20 @@ class TestOp : CommandOpMode() {
             .whenPressed(HomeCmd(lift, arm, wrist))
 
         gamepad1.getGamepadButton(GamepadKeys.Button.A)
-            .whenPressed(InstantCommand({intake.servoLeft.position = 1.0
-            intake.servoRight.position = 1.0}))
+            .whenPressed(InstantCommand({intake.servoLeft.position = 0.675
+            intake.servoRight.position = 0.675}))
 
         gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
-            .whenPressed(armLower)
+            .whenPressed(WristCmd(wrist, 0.0))
 
         gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_UP)
-            .whenPressed(armRaise)
+            .whenPressed(WristCmd(wrist, 0.5))
+
+        gamepad2.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+            .whenPressed(ArmCmd(arm, 0.0))
+
+        gamepad2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
+            .whenPressed(ArmCmd(arm, 0.5))
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0}
             .whileActiveContinuous(IntakeSequenceCmd(intake, wrist))

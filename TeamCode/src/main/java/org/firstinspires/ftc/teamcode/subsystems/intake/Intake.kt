@@ -40,19 +40,19 @@ class Intake(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
         servoLeft = hardwareMap.get(Servo::class.java, "claw1")
         servoRight = hardwareMap.get(Servo::class.java, "claw2")
 
-        servoLeft.position = 1.0
-        servoRight.position = 1.0;
+        servoLeft.position = 0.675
+        servoRight.position = 0.675;
     }
 
     fun on(){
         intake.power = 0.75
-        servoLeft.position = 1.0
-        servoRight.position = 1.0;
+        servoLeft.position = 0.675
+        servoRight.position = 0.675;
     }
 
     fun off(){
         intake.power = 0.0
-        servoLeft.position = 0.25
-        servoRight.position = 0.25
+        servoLeft.position = 0.6
+        servoRight.position = 0.6
     }
 }
