@@ -20,7 +20,7 @@ class ProjectionTest : CommandOpMode() {
     private lateinit var drive: MecanumDriveSubsystem
     val target = 10
     override fun initialize() {
-        val cv = AprilTag(hardwareMap, this, telemetry)
+        val cv = AprilTag(hardwareMap, this, telemetry, AprilTag.Mode.ASYNC)
         while(cv.getPose(target) == null){}
         val startPos = Pose2d(cv.getPose(target)!!.position+Vector2d(
             AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0).toDouble(),

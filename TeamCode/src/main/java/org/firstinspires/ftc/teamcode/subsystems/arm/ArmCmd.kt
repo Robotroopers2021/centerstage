@@ -1,11 +1,14 @@
 package org.firstinspires.ftc.teamcode.subsystems.arm
 
+import android.util.Log
 import com.arcrobotics.ftclib.command.CommandBase
 import com.qualcomm.robotcore.util.ElapsedTime
 import kotlin.math.abs
 
 class ArmCmd(val arm: Arm, val pos : Double): CommandBase() {
     val timer = ElapsedTime()
+    val startAnalog = arm.position
+    val startPos = arm.armLeft.position
     init {
         addRequirements(arm)
     }
@@ -15,6 +18,9 @@ class ArmCmd(val arm: Arm, val pos : Double): CommandBase() {
     }
 
     override fun isFinished(): Boolean {
-        return timer.milliseconds() > 350 //return abs(arm.armLeft.position - pos) < 0.05
+        //return timer.milliseconds() > 35
+        /*Log.d("ServoArm", abs(abs(startAnalog-arm.position)/355- abs(startPos-pos)).toString())
+        Log.d("ServoArm", (abs(abs(startAnalog-arm.position)/355- abs(startPos-pos))<0.05).toString())*/
+        return abs(abs(startAnalog-arm.position)/355- abs(startPos-pos))<0.05
     }
 }
