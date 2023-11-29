@@ -20,7 +20,7 @@ class ProjectionTest : CommandOpMode() {
     private lateinit var drive: MecanumDriveSubsystem
     val target = 5
     override fun initialize() {
-        val cv = AprilTag(hardwareMap, this, telemetry)
+        val cv = AprilTag(hardwareMap, this, telemetry, AprilTag.Mode.ASYNC)
         while(cv.getPose(target) == null){}
         val startPos = Pose2d(cv.getPose(target)!!.position+Vector2d(
             AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0).toDouble(),
@@ -36,6 +36,6 @@ class ProjectionTest : CommandOpMode() {
         ).splineTo(Vector2d(
             AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0).toDouble()+5,
             AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(1).toDouble(),
-        ),0.0).build()[0], target, cv), InstantCommand({cv.visionPortal.close()}))
+        ), PI).build()[0], target, cv), InstantCommand({cv.visionPortal.close()}))
     }
 }

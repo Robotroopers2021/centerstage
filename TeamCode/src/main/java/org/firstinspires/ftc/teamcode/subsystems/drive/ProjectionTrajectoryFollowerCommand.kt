@@ -43,11 +43,9 @@ class ProjectionTrajectoryFollowerCommand(var drive: MecanumDriveSubsystem, t: T
         p.fieldOverlay().operations.addAll(c.operations)
 
         val robotVelRobot = drive.updatePoseEstimate()
-        while(aprilTag.getPose(targetID) == null){}
-        cvPose = aprilTag.getPose(targetID)!!.position/*+Vector2d(
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(0).toDouble(),
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(9).fieldPosition.get(1).toDouble(),
-        )*/
+        //cvPose = Vector2d(aprilTag.aprilTag.detections[0].ftcPose.x, -aprilTag.aprilTag.detections[0].ftcPose.y)
+
+        cvPose = aprilTag.getPose(5)!!.position
         Log.d("cvPose", cvPose.toString())
         cvPose += Vector2d(
             AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(targetID).fieldPosition.get(0)

@@ -24,6 +24,7 @@ import org.firstinspires.ftc.vision.VisionPortal
 import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor
 import java.lang.Thread.sleep
 import java.util.concurrent.TimeUnit
+import kotlin.math.PI
 
 @OptIn(DelicateCoroutinesApi::class)
 class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Telemetry, var mode: Mode = Mode.NORMAL) {
@@ -43,7 +44,7 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
     }
 
     var webcamFront: WebcamName
-    var webcamBack: WebcamName
+    //var webcamBack: WebcamName
 
 
     var aprilTag: AprilTagProcessor = AprilTagProcessor.Builder()
@@ -71,10 +72,10 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
         val builder = VisionPortal.Builder()
 
         webcamFront = hardwareMap.get(WebcamName::class.java, "Webcam 1")
-        webcamBack = hardwareMap.get(WebcamName::class.java, "Webcam 1")
+        /*webcamBack = hardwareMap.get(WebcamName::class.java, "Webcam 1")
         val switchableCamera: CameraName = ClassFactory.getInstance()
-            .cameraManager.nameForSwitchableCamera(webcamFront, webcamBack)
-        builder.setCamera(switchableCamera)
+            .cameraManager.nameForSwitchableCamera(webcamFront, webcamBack)*/
+        builder.setCamera(webcamFront)
 
         builder.setCameraResolution(Size(320, 240))
         //builder.setCameraResolution(Size(800, 600))
@@ -83,6 +84,7 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
         builder.addProcessor(aprilTag)
 
         visionPortal = builder.build()
+        visionPortal.setProcessorEnabled(aprilTag, true)
         while (visionPortal.cameraState != VisionPortal.CameraState.STREAMING) {
         }
         visionPortal.getCameraControl(ExposureControl::class.java).mode =
@@ -109,7 +111,7 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
             }
     }
 
-    fun setCamera(camera: Camera) {
+    /*fun setCamera(camera: Camera) {
         when (camera) {
             Camera.FRONT -> {
                 visionPortal.activeCamera = webcamFront
@@ -121,18 +123,19 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
                 currentCamera = Camera.BACK
             }
         }
-    }
+    }*/
 
     //TODO: Make the pose offset calculation work
     //Gets pose offset from tag to center of robot
     fun getPose(id: Int): Pose2d? {
-        Log.d("cvPose", "CALLED GET POSE")
+        //Log.d("cvPose", "CALLED GET POSE")
+        val detections = aprilTag.detections
         when (mode) {
             Mode.NORMAL -> {
                 val detectMap = buildMap {
-                    aprilTag.detections.forEach {
-                        Log.d("cvPose", "Detection is found")
-                        put(it.id, Pose2d(it.ftcPose.x, -it.ftcPose.y, it.ftcPose.yaw))
+                    detections.forEach {
+                        put(it.id, Pose2d(it.ftcPose.y, -it.ftcPose.x, it.ftcPose.yaw))
+                        Log.d("cvPose${it.id}", Pose2d(it.ftcPose.y, -it.ftcPose.x, it.ftcPose.yaw).toString())
                         if (it.metadata != null) {
                             telemetry.addLine(
                                 String.format(
