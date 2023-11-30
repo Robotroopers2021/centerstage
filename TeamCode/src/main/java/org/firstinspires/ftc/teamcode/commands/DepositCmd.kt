@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.commands
 
 import com.arcrobotics.ftclib.command.ParallelCommandGroup
 import com.arcrobotics.ftclib.command.SequentialCommandGroup
+import com.arcrobotics.ftclib.command.WaitCommand
 import org.firstinspires.ftc.teamcode.subsystems.arm.Arm
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmCmd
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmConstants
@@ -16,7 +17,13 @@ class DepositCmd(lift: Lift, arm: Arm, wrist: Wrist) : SequentialCommandGroup() 
     init {
         addCommands(
             WristCmd(wrist, WristConstants.zeroPosition),
-            ArmCmd(arm, ArmConstants.depositPosition),
+            ParallelCommandGroup(
+                ArmCmd(arm, ArmConstants.depositPosition),
+                SequentialCommandGroup(
+                    WaitCommand(25),
+                    WristCmd(wrist, WristConstants.depositInternalPosition)
+                )
+            ),
             ParallelCommandGroup(
             LiftCmd(lift, LiftConstants.depositHeight),
             WristCmd(wrist, WristConstants.depositPosition)
