@@ -4,8 +4,9 @@ import com.acmerobotics.dashboard.config.Config
 
 @Config
 object WristConstants {
-    @JvmField var intakePosition = 0.2
+    @JvmField var intakePosition = 0.19
     @JvmField var middlePosition = 0.05
-    @JvmField var zeroPosition = 0.0
-    @JvmField var depositPosition = 0.48
+    @JvmField var zeroPosition = 0.1
+    @JvmField var depositInternalPosition = 0.05
+    @JvmField var depositPosition = 0.75
 }
