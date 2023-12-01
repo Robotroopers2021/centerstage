@@ -40,12 +40,12 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
     }
 
     override fun isFinished(): Boolean {
-        if (timer.milliseconds()>=350)
+        if (timer.milliseconds()>=2000)
             return true
-//        if(lift.liftLimit.state && pos==0.0) {
-//            Log.d("Lift", "Hit encoder")
-//            return true
-//        }
+        if(lift.liftLimit.state && pos==0.0) {
+            Log.d("Lift", "Hit encoder")
+            return true
+        }
         return pidController.atGoal()
     }
 
