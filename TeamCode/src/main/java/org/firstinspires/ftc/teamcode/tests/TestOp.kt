@@ -87,7 +87,7 @@ class TestOp : CommandOpMode() {
     override fun run() {
         super.run()
         telemetry.addData("Arm Position", arm.position)
-        telemetry.addData("Wrist Position", wrist.wrist.position)
+        telemetry.addData("Wrist Position", wrist.position)
         telemetry.addData("Lift Position", lift.liftLeadMotor.currentPosition)
         telemetry.update()
     }

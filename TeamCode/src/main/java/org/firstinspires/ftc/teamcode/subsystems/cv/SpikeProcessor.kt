@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems.cv
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration
 import org.firstinspires.ftc.vision.VisionProcessor
@@ -38,8 +39,8 @@ class SpikeProcessor(var color: Color): VisionProcessor {
         //TODO: Figure out the correct values for the scalar thresholds
         when (color) {
             Color.RED -> {
-                lower = Scalar(0.0, 0.0, 0.0)
-                upper = Scalar(255.0, 255.0, 255.0)
+                lower = Scalar(0.0, 115.0, 0.0)
+                upper = Scalar(175.0, 255.0, 255.0)
             }
 
             Color.BLUE -> {
@@ -61,11 +62,11 @@ class SpikeProcessor(var color: Color): VisionProcessor {
 
 
     //TODO: Figure out the correct values for the anchor points and widths/heights
-    val REGION1_TOPLEFT_ANCHOR_POINT = Point(109.0, 98.0)
-    val REGION2_TOPLEFT_ANCHOR_POINT = Point(181.0, 98.0)
-    val REGION3_TOPLEFT_ANCHOR_POINT = Point(253.0, 98.0)
-    val REGION_WIDTH = 20
-    val REGION_HEIGHT = 20
+    val REGION1_TOPLEFT_ANCHOR_POINT = Point(109.0, 500.0)
+    val REGION2_TOPLEFT_ANCHOR_POINT = Point(300.0, 500.0)
+    val REGION3_TOPLEFT_ANCHOR_POINT = Point(400.0, 500.0)
+    val REGION_WIDTH = 100
+    val REGION_HEIGHT = 100
 
 
     var region1_pointA = Point(
@@ -141,18 +142,22 @@ class SpikeProcessor(var color: Color): VisionProcessor {
 
         Core.inRange(ycrcbMat, lower, upper, binaryMat)
 
+        ycrcbMat.copyTo(frame)
+
         maskedInputMat.release()
 
 
-        telemetry!!.addData("[>]", "Change these values in tuner menu")
+        Core.bitwise_and(frame, frame, maskedInputMat, binaryMat)
+
+        maskedInputMat.copyTo(frame)
+        /*telemetry!!.addData("[>]", "Change these values in tuner menu")
         telemetry!!.addData("[Color Space]", colorSpace.name)
         telemetry!!.addData("[Lower Scalar]", lower)
         telemetry!!.addData("[Upper Scalar]", upper)
-        telemetry!!.update()
+        telemetry!!.update()*/
 
-        maskedInputMat.copyTo(frame)
 
-        inputToCb(frame)
+        //inputToCb(frame)
 
         avg1 = Core.mean(region1_Cb).`val`[0].toInt()
         avg2 = Core.mean(region2_Cb).`val`[0].toInt()
@@ -221,6 +226,7 @@ class SpikeProcessor(var color: Color): VisionProcessor {
             -1
         ) // Negative thickness means solid fill
         }
+        Log.d("Spike", position.toString())
         return null
     }
 

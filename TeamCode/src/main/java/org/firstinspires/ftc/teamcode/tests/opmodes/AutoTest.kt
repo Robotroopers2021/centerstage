@@ -13,6 +13,7 @@ import com.arcrobotics.ftclib.command.SubsystemBase
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.hardware.HardwareMap
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeDetector
 import org.firstinspires.ftc.teamcode.subsystems.drive.Localizer
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive
 import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDriveSubsystem
@@ -23,6 +24,7 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.commands.TrajectoryFollow
 @Autonomous
 class AutoTest : CommandOpMode() {
     private lateinit var drive: MecanumDriveSubsystem
+    private lateinit var spike: SpikeDetector
     override fun initialize() {
         val startPos = Pose2d(12.0, 62.5, Math.toRadians(90.0))
         drive = MecanumDriveSubsystem(hardwareMap, startPos, false)
@@ -65,7 +67,13 @@ class AutoTest : CommandOpMode() {
             .strafeToLinearHeading(Vector2d(47.0, 29.0), Math.toRadians(180.0))
             .build()
 
+        while (opModeInInit()){
+            telemetry.addData("Spike Position", spike.position.toString())
+            telemetry.update()
+        }
+
         waitForStart()
+        spike.visionPortal.close()
         schedule(
             SequentialCommandGroup(
                 TrajectoryFollowerCommand(drive, spikeLeft),

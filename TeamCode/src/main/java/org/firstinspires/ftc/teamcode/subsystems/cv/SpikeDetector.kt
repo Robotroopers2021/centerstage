@@ -16,7 +16,8 @@ class SpikeDetector(hardwareMap: HardwareMap, color: SpikeProcessor.Color) {
         var webcam = hardwareMap.get(WebcamName::class.java, "Webcam 3")
         builder.setCamera(webcam)
 
-        builder.setCameraResolution(Size(1920, 1080))
+        //builder.setCameraResolution(Size(1920, 1080))
+        builder.setCameraResolution(Size(1280, 960))
         builder.setStreamFormat(VisionPortal.StreamFormat.MJPEG)
         builder.addProcessor(SpikeProcessor(color))
 

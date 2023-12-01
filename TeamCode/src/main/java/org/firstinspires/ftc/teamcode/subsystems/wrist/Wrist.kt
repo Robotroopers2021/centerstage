@@ -12,9 +12,11 @@ import org.firstinspires.ftc.robotcore.external.Telemetry
 class Wrist(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
 
     var wrist: Servo
+    var wristAnalog: AnalogInput
 
     init {
         wrist = hardwareMap.get(Servo::class.java, "wrist")
+        wristAnalog = hardwareMap.get(AnalogInput::class.java, "wristAnalog")
         wrist.position = WristConstants.intakePosition
     }
 
@@ -22,4 +24,6 @@ class Wrist(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
         wrist.position = pos
     }
 
+    var position: Double = 0.0
+        get() = wristAnalog.voltage/3.3*360
 }
