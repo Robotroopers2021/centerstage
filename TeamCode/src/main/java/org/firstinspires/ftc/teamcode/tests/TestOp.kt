@@ -89,6 +89,7 @@ class TestOp : CommandOpMode() {
         telemetry.addData("Arm Position", arm.position)
         telemetry.addData("Wrist Position", wrist.position)
         telemetry.addData("Lift Position", lift.liftLeadMotor.currentPosition)
+        telemetry.addData("Lift Limit", lift.liftLimit.state)
         telemetry.update()
     }
 

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems.wrist
 
+import android.util.Log
 import com.arcrobotics.ftclib.command.CommandBase
 import com.qualcomm.robotcore.util.ElapsedTime
 import kotlin.math.abs
@@ -7,7 +8,13 @@ import kotlin.math.abs
 class WristCmd(val wrist: Wrist, val pos : Double): CommandBase() {
     val timer = ElapsedTime()
     val startAnalog = wrist.position
-    val startPos = wrist.position
+    val startPos = wrist.wrist.position
+
+    val distTraveled: Double
+        get() = abs(startAnalog-wrist.position)/355
+
+    val distRequired: Double
+        get() = abs(startPos-pos)
     init {
         addRequirements(wrist)
     }
@@ -17,7 +24,7 @@ class WristCmd(val wrist: Wrist, val pos : Double): CommandBase() {
     }
 
     override fun isFinished(): Boolean {
-        return abs(abs(startAnalog-wrist.position) /355- abs(startPos-pos)) <0.05
-        //return timer.milliseconds() > 250 //abs(arm.wrist.position - pos) < 0.01
+        Log.d("Wrist", abs(distTraveled-distRequired).toString())
+        return abs(distTraveled-distRequired)<0.05 || timer.milliseconds() > 1000
     }
 }

@@ -26,7 +26,7 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
 
     val timer = ElapsedTime()
     override fun initialize() {
-        pidController.setTolerance(0.0)
+        pidController.setTolerance(0.25)
         Log.d("lift", "init command")
         targetPos = pos
         Log.d("lift", "Changed target to $pos")
@@ -40,18 +40,22 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
     }
 
     override fun isFinished(): Boolean {
-        if (timer.milliseconds()>=2000)
-            return true
-        if(lift.liftLimit.state && pos==0.0) {
-            Log.d("Lift", "Hit encoder")
-            return true
-        }
-        return pidController.atGoal()
+//        if (timer.milliseconds()>=2000)
+//            return true
+//        if(lift.liftLimit.state && pos==0.0) {
+//            Log.d("Lift", "Hit Limit")
+//            return true
+//        }
+        Log.d("Lift", "PID ${pidController.atGoal()}")
+        Log.d("Lift", "Limit ${lift.liftLimit.state}")
+        Log.d("Lift", "Timer ${timer.milliseconds()>2000}")
+
+        return pidController.atGoal() || lift.liftLimit.state || timer.milliseconds()>2000
     }
 
     override fun end(interrupted: Boolean) {
-        when(pos){
-            0.0 -> {lift.liftLeadMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
+        when(lift.liftLimit.state){
+            true -> {lift.liftLeadMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
                 lift.liftSecondMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
                 Log.d("lift", "RESET ENCODER")
                 lift.liftLeadMotor.mode = DcMotor.RunMode.RUN_WITHOUT_ENCODER

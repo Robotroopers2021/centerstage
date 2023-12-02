@@ -9,6 +9,11 @@ class ArmCmd(val arm: Arm, val pos : Double): CommandBase() {
     val timer = ElapsedTime()
     val startAnalog = arm.position
     val startPos = arm.armLeft.position
+    val distTraveled: Double
+        get() = abs(startAnalog-arm.position)/355
+
+    val distRequired: Double
+        get() = abs(startPos-pos)
     init {
         addRequirements(arm)
     }
@@ -21,6 +26,7 @@ class ArmCmd(val arm: Arm, val pos : Double): CommandBase() {
         //return timer.milliseconds() > 35
         /*Log.d("ServoArm", abs(abs(startAnalog-arm.position)/355- abs(startPos-pos)).toString())
         Log.d("ServoArm", (abs(abs(startAnalog-arm.position)/355- abs(startPos-pos))<0.05).toString())*/
-        return abs(abs(startAnalog-arm.position)/355- abs(startPos-pos))<0.05
+        Log.d("Arm", abs(distTraveled-distRequired).toString())
+        return abs(distTraveled-distRequired)<0.05 || timer.milliseconds() > 1000
     }
 }
