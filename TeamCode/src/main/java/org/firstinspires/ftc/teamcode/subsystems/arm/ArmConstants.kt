@@ -6,6 +6,7 @@ import com.acmerobotics.dashboard.config.Config
 object ArmConstants {
     @JvmField var zeroPosition = 0.0
     @JvmField var depositPosition = 0.375
-    @JvmField var intakePosition = 0.02
-    @JvmField var middlePosition = 0.215
+    @JvmField var intakePosition = 0.0
+    @JvmField var bufferPosition = 0.05
+    @JvmField var middlePosition = 0.085
 }

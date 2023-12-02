@@ -18,26 +18,23 @@ import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
 import org.firstinspires.ftc.teamcode.subsystems.wrist.WristConstants
 import kotlin.math.abs
 
-class HomeCmd(val lift: Lift, val arm: Arm, val wrist: Wrist) : SequentialCommandGroup() {
+class HomeCmd(lift: Lift, arm: Arm, wrist: Wrist) : SequentialCommandGroup() {
     init {
-        val required = abs(ArmConstants.intakePosition-ArmConstants.depositPosition)
-        Log.d("Home Dist Required",
-            (required).toString()
-        )
+        val required = abs(WristConstants.intakePosition-WristConstants.middlePosition)
         val armLower = ArmCmd(arm, ArmConstants.intakePosition)
         addCommands(
             ParallelCommandGroup(
                 WristCmd(wrist, WristConstants.middlePosition),
                 LiftCmd(lift, LiftConstants.zeroPosition),
             ),
+            ArmCmd(arm, ArmConstants.middlePosition),
             ParallelCommandGroup(
-                armLower,
-//            WaitUntilCommand { armLower.distTraveled / armLower.distRequired > 0.1 },
-                SequentialCommandGroup(
-                    WaitUntilCommand { armLower.distTraveled / required > HomeConstants.waitUntil },
-                    WristCmd(wrist, WristConstants.intakePosition)
-                )
-            )
+                WristCmd(wrist, WristConstants.bufferPosition),
+                ArmCmd(arm, ArmConstants.bufferPosition),
+            ) ,
+//                    WaitUntilCommand { armLower.distTraveled / required > HomeConstants.waitUntil },
+            WristCmd(wrist, WristConstants.intakePosition),
+            ArmCmd(arm, ArmConstants.intakePosition)
 //            WristCmd(wrist, 0.09),
 //            ArmCmd(arm, ArmConstants.intakePosition),
 //            WristCmd(wrist, WristConstants.intakePosition)

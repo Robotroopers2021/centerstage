@@ -51,8 +51,11 @@ class TestOp : CommandOpMode() {
 
 
 
+        /*gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+            .whenPressed(DepositCmd(lift, arm, wrist))*/
+
         gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-            .whenPressed(DepositCmd(lift, arm, wrist))
+            .toggleWhenPressed(DepositCmd(lift, arm, wrist), HomeCmd(lift, arm, wrist))
 
         gamepad1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
             .whenPressed(HomeCmd(lift, arm, wrist))
