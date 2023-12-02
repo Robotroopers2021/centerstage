@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.config.Config
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.arcrobotics.ftclib.command.SubsystemBase
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
@@ -12,12 +13,16 @@ import com.qualcomm.robotcore.hardware.HardwareMap
 import org.firstinspires.ftc.robotcore.external.Telemetry
 
 @Config
-class Lift(hardwareMap: HardwareMap, telemetry: Telemetry): SubsystemBase() {
+class Lift(hardwareMap: HardwareMap, telemetry: Telemetry, type: opModeType): SubsystemBase() {
     var liftLeadMotor: DcMotorEx
     var liftSecondMotor: DcMotorEx
     var liftLimit: DigitalChannel
     var mTelemetry: MultipleTelemetry
 
+    enum class opModeType{
+        Autonomous,
+        TeleOp
+    }
     init{
         mTelemetry = MultipleTelemetry(telemetry, FtcDashboard.getInstance().telemetry)
         liftLeadMotor = hardwareMap.get(DcMotorEx::class.java, "liftLead")

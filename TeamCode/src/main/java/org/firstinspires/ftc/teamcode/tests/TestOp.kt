@@ -9,9 +9,11 @@ import com.arcrobotics.ftclib.command.button.Trigger
 import com.arcrobotics.ftclib.gamepad.GamepadEx
 import com.arcrobotics.ftclib.gamepad.GamepadKeys
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
+import com.qualcomm.robotcore.hardware.DcMotor
 import org.firstinspires.ftc.teamcode.commands.DepositCmd
 import org.firstinspires.ftc.teamcode.commands.HomeCmd
 import org.firstinspires.ftc.teamcode.commands.IntakeSequenceCmd
+import org.firstinspires.ftc.teamcode.commands.SaveLift
 import org.firstinspires.ftc.teamcode.subsystems.arm.Arm
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmCmd
 import org.firstinspires.ftc.teamcode.subsystems.arm.ArmConstants
@@ -39,7 +41,7 @@ class TestOp : CommandOpMode() {
         val gamepad1 = GamepadEx(gamepad1)
         val gamepad2 = GamepadEx(gamepad2)
 
-        lift = Lift(hardwareMap, telemetry)
+        lift = Lift(hardwareMap, telemetry, Lift.opModeType.TeleOp)
         drive = MecanumDriveSubsystem(hardwareMap, Pose2d(0.0, 0.0, 0.0), false)
         intake = Intake(hardwareMap, telemetry)
         arm = Arm(hardwareMap, telemetry)
@@ -75,6 +77,9 @@ class TestOp : CommandOpMode() {
 
         gamepad2.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
             .whenPressed(ArmCmd(arm, 0.5))
+
+        gamepad2.getGamepadButton(GamepadKeys.Button.A)
+            .whenPressed(SaveLift(lift, arm, wrist))
 
         Trigger{gamepad1.getTrigger(GamepadKeys.Trigger.LEFT_TRIGGER) > 0.0}
             .whileActiveContinuous(IntakeSequenceCmd(intake, wrist))

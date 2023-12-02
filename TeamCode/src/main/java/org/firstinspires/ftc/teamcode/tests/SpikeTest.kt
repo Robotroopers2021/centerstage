@@ -20,6 +20,7 @@ class SpikeTest : LinearOpMode() {
         waitForStart()
         while (opModeIsActive()){
             telemetry.addData("Position", cv.position.toString())
+            telemetry.update()
         }
     }
 

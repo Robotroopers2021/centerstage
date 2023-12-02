@@ -6,6 +6,18 @@ import android.graphics.Paint
 import android.util.Log
 import org.firstinspires.ftc.robotcore.external.Telemetry
 import org.firstinspires.ftc.robotcore.internal.camera.calibration.CameraCalibration
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.REGION1_TOPLEFT_ANCHOR_POINT_X
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.REGION1_TOPLEFT_ANCHOR_POINT_Y
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.REGION2_TOPLEFT_ANCHOR_POINT_X
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.REGION2_TOPLEFT_ANCHOR_POINT_Y
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.REGION3_TOPLEFT_ANCHOR_POINT_X
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.REGION3_TOPLEFT_ANCHOR_POINT_Y
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.lowerV1
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.lowerV2
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.lowerV0
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.upperV0
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.upperV1
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.upperV2
 import org.firstinspires.ftc.vision.VisionProcessor
 import org.opencv.core.Core
 import org.opencv.core.Mat
@@ -39,8 +51,8 @@ class SpikeProcessor(var color: Color): VisionProcessor {
         //TODO: Figure out the correct values for the scalar thresholds
         when (color) {
             Color.RED -> {
-                lower = Scalar(0.0, 115.0, 0.0)
-                upper = Scalar(175.0, 255.0, 255.0)
+                lower = Scalar(lowerV0, lowerV1, lowerV2)
+                upper = Scalar(upperV0, upperV1, upperV2)
             }
 
             Color.BLUE -> {
@@ -62,9 +74,9 @@ class SpikeProcessor(var color: Color): VisionProcessor {
 
 
     //TODO: Figure out the correct values for the anchor points and widths/heights
-    val REGION1_TOPLEFT_ANCHOR_POINT = Point(109.0, 500.0)
-    val REGION2_TOPLEFT_ANCHOR_POINT = Point(300.0, 500.0)
-    val REGION3_TOPLEFT_ANCHOR_POINT = Point(400.0, 500.0)
+    val REGION1_TOPLEFT_ANCHOR_POINT = Point(REGION1_TOPLEFT_ANCHOR_POINT_X, REGION1_TOPLEFT_ANCHOR_POINT_Y)
+    val REGION2_TOPLEFT_ANCHOR_POINT = Point(REGION2_TOPLEFT_ANCHOR_POINT_X, REGION2_TOPLEFT_ANCHOR_POINT_Y)
+    val REGION3_TOPLEFT_ANCHOR_POINT = Point(REGION3_TOPLEFT_ANCHOR_POINT_X, REGION3_TOPLEFT_ANCHOR_POINT_Y)
     val REGION_WIDTH = 100
     val REGION_HEIGHT = 100
 
@@ -191,6 +203,11 @@ class SpikeProcessor(var color: Color): VisionProcessor {
 
         val maxOneTwo = Math.max(avg1, avg2)
         val max = Math.max(maxOneTwo, avg3)
+
+        Log.d("LEFT AVG", avg1.toString())
+        Log.d("CENTER AVG", avg2.toString())
+        Log.d("RIGHT AVG", avg3.toString())
+
 
         if (max == avg1) // Was it from region 1?
         {
