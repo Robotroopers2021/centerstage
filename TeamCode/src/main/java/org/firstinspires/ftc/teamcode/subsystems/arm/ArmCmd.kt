@@ -12,10 +12,12 @@ class ArmCmd(val arm: Arm, val pos : Double): CommandBase() {
     val distTraveled: Double
         get() = abs(startAnalog-arm.position)/355
 
-    val distRequired: Double
-        get() = abs(startPos-pos)
+    val distRequired = abs(startPos-pos)
     init {
         addRequirements(arm)
+        Log.d("Arm startPos", startPos.toString())
+        Log.d("Arm Pos", pos.toString())
+        Log.d("Arm Required", distRequired.toString())
     }
     override fun initialize() {
         arm.setArmPos(pos)

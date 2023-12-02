@@ -13,8 +13,7 @@ class WristCmd(val wrist: Wrist, val pos : Double): CommandBase() {
     val distTraveled: Double
         get() = abs(startAnalog-wrist.position)/355
 
-    val distRequired: Double
-        get() = abs(startPos-pos)
+    val distRequired = abs(startPos-pos)
     init {
         addRequirements(wrist)
     }

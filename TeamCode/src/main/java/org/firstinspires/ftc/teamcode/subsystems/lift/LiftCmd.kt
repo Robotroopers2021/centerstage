@@ -26,7 +26,7 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
 
     val timer = ElapsedTime()
     override fun initialize() {
-        pidController.setTolerance(0.25)
+        pidController.setTolerance(0.1)
         Log.d("lift", "init command")
         targetPos = pos
         Log.d("lift", "Changed target to $pos")
