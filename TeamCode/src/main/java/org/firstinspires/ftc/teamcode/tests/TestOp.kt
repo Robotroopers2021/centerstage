@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.commands.GamepadDrive
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake
 import org.firstinspires.ftc.teamcode.subsystems.intake.IntakeCmd
 import org.firstinspires.ftc.teamcode.subsystems.lift.Lift
+import org.firstinspires.ftc.teamcode.subsystems.lift.LiftCmd
 import org.firstinspires.ftc.teamcode.subsystems.lift.LiftConstants
 import org.firstinspires.ftc.teamcode.subsystems.wrist.Wrist
 import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
@@ -53,11 +54,11 @@ class TestOp : CommandOpMode() {
 
 
 
-        /*gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-            .whenPressed(DepositCmd(lift, arm, wrist))*/
-
         gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-            .toggleWhenPressed(DepositCmd(lift, arm, wrist), HomeCmd(lift, arm, wrist))
+            .whenPressed(DepositCmd(lift, arm, wrist, 1.0))
+
+//        gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+//            .toggleWhenPressed(DepositCmd(lift, arm, wrist), HomeCmd(lift, arm, wrist))
 
         gamepad1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
             .whenPressed(HomeCmd(lift, arm, wrist))
@@ -65,6 +66,12 @@ class TestOp : CommandOpMode() {
         gamepad1.getGamepadButton(GamepadKeys.Button.A)
             .whenPressed(InstantCommand({intake.servoLeft.position = 0.675
             intake.servoRight.position = 0.675}))
+
+        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_UP)
+            .whenPressed(LiftCmd(lift, (lift.liftLeadMotor.currentPosition.toDouble()/(LiftConstants.ticksPerInch)) + 3.0))
+
+        gamepad1.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
+            .whenPressed(LiftCmd(lift, (lift.liftLeadMotor.currentPosition.toDouble()/(LiftConstants.ticksPerInch)) - 3.0))
 
         gamepad2.getGamepadButton(GamepadKeys.Button.DPAD_DOWN)
             .whenPressed(WristCmd(wrist, 0.0))

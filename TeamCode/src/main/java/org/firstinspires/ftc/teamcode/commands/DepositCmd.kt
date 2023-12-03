@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
 import org.firstinspires.ftc.teamcode.subsystems.wrist.WristConstants
 import kotlin.math.abs
 
-class DepositCmd(lift: Lift, arm: Arm, wrist: Wrist) : SequentialCommandGroup() {
+class DepositCmd(lift: Lift, arm: Arm, wrist: Wrist, pos : Double) : SequentialCommandGroup() {
     init {
         val armDeposit = ArmCmd(arm, ArmConstants.depositPosition)
         addCommands(
@@ -23,11 +23,11 @@ class DepositCmd(lift: Lift, arm: Arm, wrist: Wrist) : SequentialCommandGroup() 
             ParallelCommandGroup(
                 armDeposit,
 //                    WaitUntilCommand { armDeposit.distTraveled / armDeposit.distRequired > 0.5 }), //Percent traveled
-                WristCmd(wrist, WristConstants.depositInternalPosition
+                WristCmd(wrist, WristConstants.middlePosition
                 )
             ),
             ParallelCommandGroup(
-            LiftCmd(lift, LiftConstants.depositHeight),
+            LiftCmd(lift, pos),
             WristCmd(wrist, WristConstants.depositPosition)
             )
         )
