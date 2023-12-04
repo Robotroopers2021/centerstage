@@ -151,7 +151,7 @@ class AutoTest : CommandOpMode() {
             SpikeProcessor.Position.RIGHT -> Pose2d(spikeRightX, spikeRightY, Math.toRadians(180.0))
         })
             .setReversed(true)
-            .splineTo(Vector2d(parkX, parkY), Math.toRadians(180.0))
+            .strafeTo(Vector2d(parkX, parkY))
             .build()
 
         schedule(
