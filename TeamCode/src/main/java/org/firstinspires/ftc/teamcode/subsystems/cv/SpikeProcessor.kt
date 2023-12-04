@@ -45,7 +45,9 @@ class SpikeProcessor(var color: Color): VisionProcessor {
         CENTER
     }
 
-    var position = Position.LEFT
+    companion object{
+        @JvmField var position = Position.LEFT
+    }
 
     init {
         //TODO: Figure out the correct values for the scalar thresholds
@@ -138,15 +140,7 @@ class SpikeProcessor(var color: Color): VisionProcessor {
 
     var firstFrame = true
     override fun processFrame(frame: Mat?, captureTimeNanos: Long): Any? {
-        if(firstFrame){
-            inputToCb(frame)
-
-            region1_Cb = Cb.submat(Rect(region1_pointA, region1_pointB))
-            region2_Cb = Cb.submat(Rect(region2_pointA, region2_pointB))
-            region3_Cb = Cb.submat(Rect(region3_pointA, region3_pointB))
-
-            firstFrame = false
-        }
+        inputToCb(frame)
 
 
         Imgproc.cvtColor(frame, ycrcbMat, colorSpace.cvtCode)
@@ -162,18 +156,10 @@ class SpikeProcessor(var color: Color): VisionProcessor {
         Core.bitwise_and(frame, frame, maskedInputMat, binaryMat)
 
         maskedInputMat.copyTo(frame)
-        /*telemetry!!.addData("[>]", "Change these values in tuner menu")
-        telemetry!!.addData("[Color Space]", colorSpace.name)
-        telemetry!!.addData("[Lower Scalar]", lower)
-        telemetry!!.addData("[Upper Scalar]", upper)
-        telemetry!!.update()*/
 
-
-        //inputToCb(frame)
-
-        avg1 = Core.mean(region1_Cb).`val`[0].toInt()
-        avg2 = Core.mean(region2_Cb).`val`[0].toInt()
-        avg3 = Core.mean(region3_Cb).`val`[0].toInt()
+        avg1 = Core.mean(maskedInputMat.submat(Rect(region1_pointA, region1_pointB))).`val`[0].toInt()
+        avg2 = Core.mean(maskedInputMat.submat(Rect(region2_pointA, region2_pointB))).`val`[0].toInt()
+        avg3 = Core.mean(maskedInputMat.submat(Rect(region3_pointA, region3_pointB))).`val`[0].toInt()
 
         Imgproc.rectangle(
             frame,  // Buffer to draw on
@@ -211,7 +197,7 @@ class SpikeProcessor(var color: Color): VisionProcessor {
 
         if (max == avg1) // Was it from region 1?
         {
-            position = Position.LEFT // Record our analysis
+            position = Position.RIGHT // Record our analysis
 
             Imgproc.rectangle(
             frame,  // Buffer to draw on
@@ -233,7 +219,7 @@ class SpikeProcessor(var color: Color): VisionProcessor {
         ) // Negative thickness means solid fill
         } else if (max == avg3) // Was it from region 3?
         {
-            position = Position.RIGHT // Record our analysis
+            position = Position.LEFT // Record our analysis
 
             Imgproc.rectangle(
             frame,  // Buffer to draw on
@@ -244,6 +230,7 @@ class SpikeProcessor(var color: Color): VisionProcessor {
         ) // Negative thickness means solid fill
         }
         Log.d("Spike", position.toString())
+
         return null
     }
 
@@ -254,7 +241,7 @@ class SpikeProcessor(var color: Color): VisionProcessor {
         scaleBmpPxToCanvasPx: Float,
         scaleCanvasDensity: Float,
         userContext: Any?
-    ) {
+    ) {/*
         val paintBlue = Paint()
         paintBlue.color = android.graphics.Color.BLUE
         canvas!!.drawRect(android.graphics.Rect(region1_pointA.x.toInt(),
@@ -262,7 +249,7 @@ class SpikeProcessor(var color: Color): VisionProcessor {
         canvas.drawRect(android.graphics.Rect(region2_pointA.x.toInt(),
             region2_pointA.y.toInt(), region2_pointB.x.toInt(), region2_pointB.y.toInt()), paintBlue)
         canvas.drawRect(android.graphics.Rect(region3_pointA.x.toInt(),
-            region3_pointA.y.toInt(), region3_pointB.x.toInt(), region3_pointB.y.toInt()), paintBlue)
+            region3_pointA.y.toInt(), region3_pointB.x.toInt(), region3_pointB.y.toInt()), paintBlue)*/
     }
 
 }

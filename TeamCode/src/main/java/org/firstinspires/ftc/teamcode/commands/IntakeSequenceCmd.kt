@@ -13,11 +13,11 @@ class IntakeSequenceCmd(intake: Intake, wrist: Wrist) : SequentialCommandGroup()
     init {
         addCommands(
             ParallelCommandGroup(
-//                WristCmd(wrist, WristConstants.intakePosition),
+                WristCmd(wrist, WristConstants.intakePosition),
                 IntakeCmd(intake)
             ),
             WaitCommand(350),
-//            WristCmd(wrist, WristConstants.zeroPosition)
+            WristCmd(wrist, WristConstants.zeroPosition)
         )
     }
 }

@@ -53,12 +53,13 @@ class TestOp : CommandOpMode() {
         val armRaise = ArmCmd(arm, ArmConstants.depositPosition)
 
 
-
-        gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-            .whenPressed(DepositCmd(lift, arm, wrist, 1.0))
+        schedule(HomeCmd(lift, arm, wrist))
 
 //        gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-//            .toggleWhenPressed(DepositCmd(lift, arm, wrist), HomeCmd(lift, arm, wrist))
+//            .whenPressed(DepositCmd(lift, arm, wrist, 10.0))
+
+       gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+           .toggleWhenPressed(DepositCmd(lift, arm, wrist, 10.0), HomeCmd(lift, arm, wrist))
 
         gamepad1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
             .whenPressed(HomeCmd(lift, arm, wrist))

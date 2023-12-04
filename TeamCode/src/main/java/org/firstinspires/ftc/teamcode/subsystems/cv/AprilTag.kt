@@ -44,7 +44,7 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
     }
 
     var webcamFront: WebcamName
-    //var webcamBack: WebcamName
+    var webcamBack: WebcamName
 
 
     var aprilTag: AprilTagProcessor = AprilTagProcessor.Builder()
@@ -71,10 +71,10 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
     init {
         val builder = VisionPortal.Builder()
 
-        webcamFront = hardwareMap.get(WebcamName::class.java, "Webcam 1")
-        /*webcamBack = hardwareMap.get(WebcamName::class.java, "Webcam 1")
+        webcamFront = hardwareMap.get(WebcamName::class.java, "Webcam 2")
+        webcamBack = hardwareMap.get(WebcamName::class.java, "Webcam 1")
         val switchableCamera: CameraName = ClassFactory.getInstance()
-            .cameraManager.nameForSwitchableCamera(webcamFront, webcamBack)*/
+            .cameraManager.nameForSwitchableCamera(webcamFront, webcamBack)
         builder.setCamera(webcamFront)
 
         builder.setCameraResolution(Size(320, 240))

@@ -24,6 +24,6 @@ class WristCmd(val wrist: Wrist, val pos : Double): CommandBase() {
 
     override fun isFinished(): Boolean {
         Log.d("Wrist", abs(distTraveled-distRequired).toString())
-        return abs(distTraveled-distRequired)<0.05 || timer.milliseconds() > 1000
+        return abs(distTraveled-distRequired)<0.05 || timer.milliseconds() > 300
     }
 }
