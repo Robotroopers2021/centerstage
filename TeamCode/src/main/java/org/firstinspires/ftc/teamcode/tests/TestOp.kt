@@ -55,11 +55,11 @@ class TestOp : CommandOpMode() {
 
         schedule(HomeCmd(lift, arm, wrist))
 
-//        gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-//            .whenPressed(DepositCmd(lift, arm, wrist, 10.0))
+        gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+            .whenPressed(DepositCmd(lift, arm, wrist, 3.0))
 
-       gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
-           .toggleWhenPressed(DepositCmd(lift, arm, wrist, 10.0), HomeCmd(lift, arm, wrist))
+//       gamepad1.getGamepadButton(GamepadKeys.Button.LEFT_BUMPER)
+//           .toggleWhenPressed(DepositCmd(lift, arm, wrist, 10.0), HomeCmd(lift, arm, wrist))
 
         gamepad1.getGamepadButton(GamepadKeys.Button.RIGHT_BUMPER)
             .whenPressed(HomeCmd(lift, arm, wrist))
