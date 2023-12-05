@@ -33,6 +33,7 @@ import org.firstinspires.ftc.teamcode.subsystems.lift.LiftConstants
 import org.firstinspires.ftc.teamcode.subsystems.wrist.Wrist
 import org.firstinspires.ftc.teamcode.subsystems.wrist.WristCmd
 import org.firstinspires.ftc.teamcode.subsystems.wrist.WristConstants
+import java.lang.NullPointerException
 
 @TeleOp
 class TestOp : CommandOpMode() {
@@ -135,19 +136,31 @@ class TestOp : CommandOpMode() {
     }
 
     private fun autoStop(): Boolean{
-        Log.d("AutoStop" , ((min(doubleArrayOf(aprilTag.getPose(4)?.position?.y ?: Double.MAX_VALUE,
-            (aprilTag.getPose(5)?.position?.y) ?: Double.MAX_VALUE,
-            (aprilTag.getPose(6)?.position?.y) ?: Double.MAX_VALUE,
-            aprilTag.getPose(1)?.position?.y ?: Double.MAX_VALUE,
-            (aprilTag.getPose(2)?.position?.y) ?: Double.MAX_VALUE,
-            (aprilTag.getPose(3)?.position?.y) ?: Double.MAX_VALUE,
-        ))<10) && !gamepad1.b).toString())
-        return ((min(doubleArrayOf(aprilTag.getPose(4)?.position?.y ?: Double.MAX_VALUE,
-            (aprilTag.getPose(5)?.position?.y) ?: Double.MAX_VALUE,
-            (aprilTag.getPose(6)?.position?.y) ?: Double.MAX_VALUE,
-            aprilTag.getPose(1)?.position?.y ?: Double.MAX_VALUE,
-            (aprilTag.getPose(2)?.position?.y) ?: Double.MAX_VALUE,
-            (aprilTag.getPose(3)?.position?.y) ?: Double.MAX_VALUE,
-        ))<10) && !gamepad1.b)
+        try {
+            Log.d(
+                "AutoStop", ((min(
+                    doubleArrayOf(
+                        aprilTag.getPose(4)?.position?.y ?: Double.MAX_VALUE,
+                        (aprilTag.getPose(5)?.position?.y) ?: Double.MAX_VALUE,
+                        (aprilTag.getPose(6)?.position?.y) ?: Double.MAX_VALUE,
+                        aprilTag.getPose(1)?.position?.y ?: Double.MAX_VALUE,
+                        (aprilTag.getPose(2)?.position?.y) ?: Double.MAX_VALUE,
+                        (aprilTag.getPose(3)?.position?.y) ?: Double.MAX_VALUE,
+                    )
+                ) < 10) && !gamepad1.b).toString()
+            )
+            return ((min(
+                doubleArrayOf(
+                    aprilTag.getPose(4)?.position?.y ?: Double.MAX_VALUE,
+                    (aprilTag.getPose(5)?.position?.y) ?: Double.MAX_VALUE,
+                    (aprilTag.getPose(6)?.position?.y) ?: Double.MAX_VALUE,
+                    aprilTag.getPose(1)?.position?.y ?: Double.MAX_VALUE,
+                    (aprilTag.getPose(2)?.position?.y) ?: Double.MAX_VALUE,
+                    (aprilTag.getPose(3)?.position?.y) ?: Double.MAX_VALUE,
+                )
+            ) < 10) && !gamepad1.b)
+        }catch (e: NullPointerException){
+            return false
+        }
     }
 }

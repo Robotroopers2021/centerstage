@@ -72,8 +72,8 @@ class AutoTest : CommandOpMode() {
         lift = Lift(hardwareMap, telemetry, Lift.opModeType.Autonomous)
         spike = Spike(hardwareMap, SpikeProcessor.Color.RED)
         intake = Intake(hardwareMap, telemetry)
-        //aprilTag = AprilTag(hardwareMap, this, telemetry)
-        //aprilTag.visionPortal.stopStreaming()
+        aprilTag = AprilTag(hardwareMap, this, telemetry)
+        aprilTag.visionPortal.stopStreaming()
         drive = MecanumDriveSubsystem(hardwareMap, startPos, false)
         drive.poseEstimate = startPos
 
@@ -117,8 +117,8 @@ class AutoTest : CommandOpMode() {
 
         waitForStart()
         spike.stop()
-        //aprilTag.visionPortal.resumeStreaming()
-        //aprilTag.currentCamera = AprilTag.Camera.BACK
+        aprilTag.visionPortal.resumeStreaming()
+        aprilTag.currentCamera = AprilTag.Camera.BACK
 
         val deposit = drive.drive.actionBuilder(when(spike.position){
             SpikeProcessor.Position.LEFT -> Pose2d(spikeLeftX, spikeLeftY, Math.toRadians(180.0))
@@ -163,6 +163,7 @@ class AutoTest : CommandOpMode() {
                     SpikeProcessor.Position.CENTER -> spikeMiddle
                     SpikeProcessor.Position.RIGHT -> spikeRight
                 }),
+                TrajectoryFollowerCommand(drive, deposit),/*
                 ParallelCommandGroup(
                     TrajectoryFollowerCommand(drive, deposit),
                     DepositCmd(lift, arm, wrist, 3.0)
@@ -171,13 +172,13 @@ class AutoTest : CommandOpMode() {
                     intake.servoRight.position = 0.675}),
                 WaitCommand(300),
                 HomeCmd(lift, arm, wrist),
-                TrajectoryFollowerCommand(drive, park)
+                TrajectoryFollowerCommand(drive, park)*/
 
-                /*InstantCommand({projection(when(spike.position){
+                InstantCommand({projection(when(spike.position){
                     SpikeProcessor.Position.LEFT -> 1
                     SpikeProcessor.Position.CENTER -> 2
                     SpikeProcessor.Position.RIGHT -> 3
-                })})*/
+                })})
             )
         )
     }
@@ -195,7 +196,7 @@ class AutoTest : CommandOpMode() {
             startPos, 1e-6, 0.0,
             drive.defaultVelConstraint, drive.defaultAccelConstraint, 0.25, 0.1
         ).strafeTo(Vector2d(
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0).toDouble()-5,
+            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0).toDouble()+10,
             AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(1).toDouble(),
         )).build()[0]
         val dt = DisplacementTrajectory(t)
