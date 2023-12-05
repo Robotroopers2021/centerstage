@@ -193,9 +193,9 @@ class AutoTest : CommandOpMode() {
             startPos, 1e-6, 0.0,
             drive.defaultVelConstraint, drive.defaultAccelConstraint, 0.25, 0.1
         ).strafeTo(when(spike.position){
-            SpikeProcessor.Position.LEFT -> Vector2d(depositX, depositLeftY)
-            SpikeProcessor.Position.CENTER -> Vector2d(depositX, depositCenterY)
-            SpikeProcessor.Position.RIGHT -> Vector2d(depositX, depositRightY)
+            SpikeProcessor.Position.LEFT -> Vector2d(46.0, depositLeftY)
+            SpikeProcessor.Position.CENTER -> Vector2d(46.0, depositCenterY)
+            SpikeProcessor.Position.RIGHT -> Vector2d(46.0, depositRightY)
         }).build()[0]
         val dt = DisplacementTrajectory(t)
         val hc = HolonomicController(
@@ -222,9 +222,9 @@ class AutoTest : CommandOpMode() {
             cvPose = aprilTag.getPose(target)!!.position
             Log.d("cvPose", cvPose.toString())
             cvPose += when(spike.position){
-                SpikeProcessor.Position.LEFT -> Vector2d(depositX, depositLeftY)
-                SpikeProcessor.Position.CENTER -> Vector2d(depositX, depositCenterY)
-                SpikeProcessor.Position.RIGHT -> Vector2d(depositX, depositRightY)
+                SpikeProcessor.Position.LEFT -> Vector2d(46.0, depositLeftY)
+                SpikeProcessor.Position.CENTER -> Vector2d(46.0, depositCenterY)
+                SpikeProcessor.Position.RIGHT -> Vector2d(46.0, depositRightY)
             }
 
             Log.d("cvPoseGlobal", cvPose.toString())
