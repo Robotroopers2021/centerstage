@@ -24,8 +24,8 @@ class SaveLift(lift: Lift, arm: Arm, wrist: Wrist) : SequentialCommandGroup() {
             ArmCmd(arm, ArmConstants.depositPosition),
             LiftCmd(lift, LiftConstants.depositHeight),
             InstantCommand({while(!lift.liftLimit.state){
-                lift.liftLeadMotor.power = -0.4
-                lift.liftSecondMotor.power = -0.4
+                lift.liftLeadMotor.power = -0.6
+                lift.liftSecondMotor.power = -0.6
             }
                 lift.liftLeadMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
                 lift.liftSecondMotor.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER

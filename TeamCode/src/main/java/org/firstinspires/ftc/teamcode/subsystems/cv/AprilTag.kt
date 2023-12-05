@@ -59,6 +59,11 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
         .build()
 
     var currentCamera = Camera.FRONT
+        set(value) = when(value){
+                Camera.FRONT -> visionPortal.activeCamera = webcamFront
+                Camera.BACK -> visionPortal.activeCamera = webcamBack
+            }
+
 
 
     @Volatile
@@ -75,7 +80,8 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
         webcamBack = hardwareMap.get(WebcamName::class.java, "Webcam 1")
         val switchableCamera: CameraName = ClassFactory.getInstance()
             .cameraManager.nameForSwitchableCamera(webcamFront, webcamBack)
-        builder.setCamera(webcamFront)
+
+        builder.setCamera(switchableCamera)
 
         builder.setCameraResolution(Size(320, 240))
         //builder.setCameraResolution(Size(800, 600))
@@ -83,8 +89,10 @@ class AprilTag(hardwareMap: HardwareMap, opMode: LinearOpMode, val telemetry: Te
         //aprilTag.setDecimation(10F)
         builder.addProcessor(aprilTag)
 
+        builder.enableLiveView(false)
         visionPortal = builder.build()
         visionPortal.setProcessorEnabled(aprilTag, true)
+
         while (visionPortal.cameraState != VisionPortal.CameraState.STREAMING) {
         }
         visionPortal.getCameraControl(ExposureControl::class.java).mode =

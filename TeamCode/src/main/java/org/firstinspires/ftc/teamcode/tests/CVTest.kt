@@ -14,7 +14,7 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.MecanumDrive
 @Autonomous
 class CVTest : LinearOpMode() {
     override fun runOpMode() {
-        val cv = AprilTag(hardwareMap, this, telemetry, AprilTag.Mode.ASYNC)
+        val cv = AprilTag(hardwareMap, this, telemetry)
         val drive = MecanumDrive(hardwareMap, Pose2d(0.0, 0.0, 0.0))
         waitForStart()
         while (opModeIsActive()){
