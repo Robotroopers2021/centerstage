@@ -186,19 +186,17 @@ class AutoTest : CommandOpMode() {
 
     fun projection(target: Int){
         Log.d("cvPose", "init cv")
-        val startPos = Pose2d(aprilTag.getPose(target)!!.position+Vector2d(
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0).toDouble(),
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(1).toDouble(),
-        ), 0.0)
+        val startPos = drive.poseEstimate
         Log.d("cvPose", startPos.toString())
         val drive = MecanumDrive(hardwareMap, startPos)
         val t = TrajectoryBuilder(
             startPos, 1e-6, 0.0,
             drive.defaultVelConstraint, drive.defaultAccelConstraint, 0.25, 0.1
-        ).strafeTo(Vector2d(
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0).toDouble()+10,
-            AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(1).toDouble(),
-        )).build()[0]
+        ).strafeTo(when(spike.position){
+            SpikeProcessor.Position.LEFT -> Vector2d(depositX, depositLeftY)
+            SpikeProcessor.Position.CENTER -> Vector2d(depositX, depositCenterY)
+            SpikeProcessor.Position.RIGHT -> Vector2d(depositX, depositRightY)
+        }).build()[0]
         val dt = DisplacementTrajectory(t)
         val hc = HolonomicController(
             MecanumDrive.PARAMS.axialGain,
@@ -223,12 +221,11 @@ class AutoTest : CommandOpMode() {
             Log.d("cvPose", "Getting pose")
             cvPose = aprilTag.getPose(target)!!.position
             Log.d("cvPose", cvPose.toString())
-            cvPose += Vector2d(
-                AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0)
-                    .toDouble(),
-                AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(1)
-                    .toDouble(),
-            )
+            cvPose += when(spike.position){
+                SpikeProcessor.Position.LEFT -> Vector2d(depositX, depositLeftY)
+                SpikeProcessor.Position.CENTER -> Vector2d(depositX, depositCenterY)
+                SpikeProcessor.Position.RIGHT -> Vector2d(depositX, depositRightY)
+            }
 
             Log.d("cvPoseGlobal", cvPose.toString())
 
