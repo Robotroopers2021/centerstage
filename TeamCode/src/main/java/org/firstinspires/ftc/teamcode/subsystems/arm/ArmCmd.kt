@@ -29,6 +29,6 @@ class ArmCmd(val arm: Arm, val pos : Double): CommandBase() {
         /*Log.d("ServoArm", abs(abs(startAnalog-arm.position)/355- abs(startPos-pos)).toString())
         Log.d("ServoArm", (abs(abs(startAnalog-arm.position)/355- abs(startPos-pos))<0.05).toString())*/
         Log.d("Arm", abs(distTraveled-distRequired).toString())
-        return abs(distTraveled-distRequired)<0.1 || timer.milliseconds() > 1000
+        return abs(distTraveled-distRequired)<0.1 || timer.milliseconds() > 300
     }
 }
