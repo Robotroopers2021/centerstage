@@ -187,16 +187,15 @@ class AutoTest : CommandOpMode() {
     fun projection(target: Int){
         Log.d("cvPose", "init cv")
         val startPos = drive.poseEstimate
-        Log.d("cvPose", startPos.toString())
+        Log.d("cvPoseStart", startPos.toString())
+        val ogCvPos = aprilTag.getPose(target)!!.position
+        val targetPos = (startPos.position + ogCvPos) + Vector2d(-10.0, 0.0)
+        Log.d("TargetPos", targetPos.toString())
         val drive = MecanumDrive(hardwareMap, startPos)
         val t = TrajectoryBuilder(
             startPos, 1e-6, 0.0,
             drive.defaultVelConstraint, drive.defaultAccelConstraint, 0.25, 0.1
-        ).strafeTo(when(spike.position){
-            SpikeProcessor.Position.LEFT -> Vector2d(46.0, depositLeftY)
-            SpikeProcessor.Position.CENTER -> Vector2d(46.0, depositCenterY)
-            SpikeProcessor.Position.RIGHT -> Vector2d(46.0, depositRightY)
-        }).build()[0]
+        ).splineTo(targetPos, 0.0).build()[0]
         val dt = DisplacementTrajectory(t)
         val hc = HolonomicController(
             MecanumDrive.PARAMS.axialGain,
@@ -219,13 +218,7 @@ class AutoTest : CommandOpMode() {
             val robotVelRobot = drive.updatePoseEstimate()
 
             Log.d("cvPose", "Getting pose")
-            cvPose = aprilTag.getPose(target)!!.position
-            Log.d("cvPose", cvPose.toString())
-            cvPose += when(spike.position){
-                SpikeProcessor.Position.LEFT -> Vector2d(46.0, depositLeftY)
-                SpikeProcessor.Position.CENTER -> Vector2d(46.0, depositCenterY)
-                SpikeProcessor.Position.RIGHT -> Vector2d(46.0, depositRightY)
-            }
+            cvPose = startPos.position + (ogCvPos-aprilTag.getPose(target)!!.position)
 
             Log.d("cvPoseGlobal", cvPose.toString())
 

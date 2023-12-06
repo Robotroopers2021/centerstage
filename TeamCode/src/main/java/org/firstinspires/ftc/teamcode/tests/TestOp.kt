@@ -137,18 +137,6 @@ class TestOp : CommandOpMode() {
 
     private fun autoStop(): Boolean{
         try {
-            Log.d(
-                "AutoStop", ((min(
-                    doubleArrayOf(
-                        aprilTag.getPose(4)?.position?.y ?: Double.MAX_VALUE,
-                        (aprilTag.getPose(5)?.position?.y) ?: Double.MAX_VALUE,
-                        (aprilTag.getPose(6)?.position?.y) ?: Double.MAX_VALUE,
-                        aprilTag.getPose(1)?.position?.y ?: Double.MAX_VALUE,
-                        (aprilTag.getPose(2)?.position?.y) ?: Double.MAX_VALUE,
-                        (aprilTag.getPose(3)?.position?.y) ?: Double.MAX_VALUE,
-                    )
-                ) < 10) && !gamepad1.b).toString()
-            )
             return ((min(
                 doubleArrayOf(
                     aprilTag.getPose(4)?.position?.y ?: Double.MAX_VALUE,
@@ -158,7 +146,7 @@ class TestOp : CommandOpMode() {
                     (aprilTag.getPose(2)?.position?.y) ?: Double.MAX_VALUE,
                     (aprilTag.getPose(3)?.position?.y) ?: Double.MAX_VALUE,
                 )
-            ) < 10) && !gamepad1.b)
+            ) < 15) && !gamepad1.b)
         }catch (e: NullPointerException){
             return false
         }

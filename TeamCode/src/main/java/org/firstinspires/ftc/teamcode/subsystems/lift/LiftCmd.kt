@@ -26,7 +26,7 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
 
     val timer = ElapsedTime()
     override fun initialize() {
-        pidController.setTolerance(0.1)
+        pidController.setTolerance(0.05)
         Log.d("lift", "init command")
         targetPos = pos
         Log.d("lift", "Changed target to $pos")
@@ -65,5 +65,10 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
             else -> {lift.liftLeadMotor.power = 0.1
                 lift.liftSecondMotor.power = 0.1}
         }
+
+        /*if(pos == LiftConstants.zeroPosition){
+            lift.liftLeadMotor.power = -0.2
+            lift.liftSecondMotor.power = -0.2
+        }*/
     }
 }
