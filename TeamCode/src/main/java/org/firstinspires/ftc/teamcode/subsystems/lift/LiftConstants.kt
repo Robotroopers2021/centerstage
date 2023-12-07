@@ -15,6 +15,6 @@ object LiftConstants {
     @JvmField var maxAccel = 300.0
     @JvmField var ticksPerInch = 78.0
     @JvmField var depositHeight = 15.0
-    @JvmField var zeroPosition = 0.0
+    @JvmField var zeroPosition = -0.3
     @JvmField var spikeHeight = 3.0
 }

@@ -195,7 +195,7 @@ class AutoTest : CommandOpMode() {
         val t = TrajectoryBuilder(
             startPos, 1e-6, 0.0,
             drive.defaultVelConstraint, drive.defaultAccelConstraint, 0.25, 0.1
-        ).splineTo(targetPos, 0.0).build()[0]
+        ).strafeTo(targetPos).build()[0]
         val dt = DisplacementTrajectory(t)
         val hc = HolonomicController(
             MecanumDrive.PARAMS.axialGain,

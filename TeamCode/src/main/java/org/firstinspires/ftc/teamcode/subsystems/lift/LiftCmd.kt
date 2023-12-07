@@ -49,8 +49,7 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
         Log.d("Lift", "PID ${pidController.atGoal()}")
         Log.d("Lift", "Limit ${lift.liftLimit.state}")
         Log.d("Lift", "Timer ${timer.milliseconds()>2000}")
-
-        return pidController.atGoal() || lift.liftLimit.state || timer.milliseconds()>2000
+        return pidController.atGoal() || lift.liftLimit.state || timer.milliseconds()>500
     }
 
     override fun end(interrupted: Boolean) {
