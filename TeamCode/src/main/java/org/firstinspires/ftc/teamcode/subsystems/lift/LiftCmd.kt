@@ -29,7 +29,7 @@ class LiftCmd(val lift: Lift, val pos: Double): ProfiledPIDCommand(
         pidController.setTolerance(0.05)
         Log.d("lift", "init command")
         targetPos = pos
-        Log.d("lift", "Changed target to $pos")
+        Log.d("lift", "CliftLeadMotored target to $pos")
         timer.reset()
     }
     companion object{

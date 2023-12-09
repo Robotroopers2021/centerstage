@@ -12,6 +12,12 @@ import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.REGION2_TOPLE
 import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.REGION2_TOPLEFT_ANCHOR_POINT_Y
 import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.REGION3_TOPLEFT_ANCHOR_POINT_X
 import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.REGION3_TOPLEFT_ANCHOR_POINT_Y
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.bluelowerV0
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.bluelowerV1
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.bluelowerV2
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.blueupperV0
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.blueupperV1
+import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.blueupperV2
 import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.lowerV1
 import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.lowerV2
 import org.firstinspires.ftc.teamcode.subsystems.cv.SpikeConstants.lowerV0
@@ -35,6 +41,9 @@ class SpikeProcessor(var color: Color): VisionProcessor {
 
     var lower: Scalar
     var upper: Scalar
+    var REGION1_TOPLEFT_ANCHOR_POINT: Point
+    var REGION2_TOPLEFT_ANCHOR_POINT: Point
+    var REGION3_TOPLEFT_ANCHOR_POINT: Point
 
     val BLUE = Scalar(0.0, 0.0, 255.0)
     val GREEN = Scalar(0.0, 255.0, 0.0)
@@ -55,11 +64,17 @@ class SpikeProcessor(var color: Color): VisionProcessor {
             Color.RED -> {
                 lower = Scalar(lowerV0, lowerV1, lowerV2)
                 upper = Scalar(upperV0, upperV1, upperV2)
+                REGION1_TOPLEFT_ANCHOR_POINT = Point(625.0, REGION1_TOPLEFT_ANCHOR_POINT_Y)
+                REGION2_TOPLEFT_ANCHOR_POINT = Point(1100.0, REGION2_TOPLEFT_ANCHOR_POINT_Y)
+                REGION3_TOPLEFT_ANCHOR_POINT = Point(1795.0, REGION3_TOPLEFT_ANCHOR_POINT_Y)
             }
 
             Color.BLUE -> {
-                lower = Scalar(0.0, 0.0, 0.0)
-                upper = Scalar(255.0, 255.0, 255.0)
+                lower = Scalar(bluelowerV0, bluelowerV1, bluelowerV2)
+                upper = Scalar(blueupperV0, blueupperV1, blueupperV2)
+                REGION1_TOPLEFT_ANCHOR_POINT = Point(REGION1_TOPLEFT_ANCHOR_POINT_X, REGION1_TOPLEFT_ANCHOR_POINT_Y)
+                REGION2_TOPLEFT_ANCHOR_POINT = Point(REGION2_TOPLEFT_ANCHOR_POINT_X, REGION2_TOPLEFT_ANCHOR_POINT_Y)
+                REGION3_TOPLEFT_ANCHOR_POINT = Point(REGION3_TOPLEFT_ANCHOR_POINT_X, REGION3_TOPLEFT_ANCHOR_POINT_Y)
             }
         }
     }
@@ -76,11 +91,9 @@ class SpikeProcessor(var color: Color): VisionProcessor {
 
 
     //TODO: Figure out the correct values for the anchor points and widths/heights
-    val REGION1_TOPLEFT_ANCHOR_POINT = Point(REGION1_TOPLEFT_ANCHOR_POINT_X, REGION1_TOPLEFT_ANCHOR_POINT_Y)
-    val REGION2_TOPLEFT_ANCHOR_POINT = Point(REGION2_TOPLEFT_ANCHOR_POINT_X, REGION2_TOPLEFT_ANCHOR_POINT_Y)
-    val REGION3_TOPLEFT_ANCHOR_POINT = Point(REGION3_TOPLEFT_ANCHOR_POINT_X, REGION3_TOPLEFT_ANCHOR_POINT_Y)
-    val REGION_WIDTH = 100
-    val REGION_HEIGHT = 100
+
+    val REGION_WIDTH = 125
+    val REGION_HEIGHT = 125
 
 
     var region1_pointA = Point(

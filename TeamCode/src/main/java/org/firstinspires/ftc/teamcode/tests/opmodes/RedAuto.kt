@@ -32,30 +32,29 @@ import org.firstinspires.ftc.teamcode.subsystems.drive.commands.TrajectoryFollow
 import org.firstinspires.ftc.teamcode.subsystems.intake.Intake
 import org.firstinspires.ftc.teamcode.subsystems.lift.Lift
 import org.firstinspires.ftc.teamcode.subsystems.wrist.Wrist
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.depositX
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.depositCenterY
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.depositLeftY
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.depositRightY
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.parkX
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.parkY
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.spikeLeftX
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.spikeLeftY
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.spikeMiddleX
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.spikeMiddleY
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.spikeRightX
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.spikeRightY
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.startH
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.startX
-import org.firstinspires.ftc.teamcode.tests.opmodes.BlueConstants.startY
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.depositX
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.depositCenterY
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.depositLeftY
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.depositRightY
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.parkX
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.parkY
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.spikeLeftX
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.spikeLeftY
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.spikeMiddleX
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.spikeMiddleY
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.spikeRightX
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.spikeRightY
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.startH
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.startX
+import org.firstinspires.ftc.teamcode.tests.opmodes.RedConstants.startY
 import org.firstinspires.ftc.vision.apriltag.AprilTagGameDatabase
-import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
 
 @Config
 @Autonomous
-class AutoTest : CommandOpMode() {
+class RedAuto : CommandOpMode() {
     private lateinit var drive: MecanumDriveSubsystem
     private lateinit var spike: Spike
     private lateinit var lift: Lift
@@ -79,7 +78,7 @@ class AutoTest : CommandOpMode() {
 
         val spikeLeft = drive.drive.actionBuilder(drive.poseEstimate)
             .setReversed(true)
-            .strafeToLinearHeading(Vector2d(spikeLeftX, spikeLeftY), Math.toRadians(180.0))
+            .strafeToLinearHeading(Vector2d(spikeLeftX, spikeLeftY), Math.toRadians(0.0))
             /*.waitSeconds(1.0)
             .strafeToLinearHeading(Vector2d(47.0, 43.0), Math.toRadians(180.0))
             //CYCLE 1
@@ -102,12 +101,12 @@ class AutoTest : CommandOpMode() {
 
         val spikeMiddle = drive.drive.actionBuilder(drive.poseEstimate)
             .setReversed(true)
-            .strafeToLinearHeading(Vector2d(spikeMiddleX, spikeMiddleY), Math.toRadians(90.0))
+            .strafeToLinearHeading(Vector2d(spikeMiddleX, spikeMiddleY), Math.toRadians(270.0))
             .build()
 
         val spikeRight = drive.drive.actionBuilder(drive.poseEstimate)
             .setReversed(true)
-            .strafeToLinearHeading(Vector2d(spikeRightX, spikeRightY), Math.toRadians(0.0))
+            .strafeToLinearHeading(Vector2d(spikeRightX, spikeRightY), Math.toRadians(180.0))
             .build()
 
         while (opModeInInit()){
@@ -121,15 +120,15 @@ class AutoTest : CommandOpMode() {
         aprilTag.currentCamera = AprilTag.Camera.BACK
 
         val deposit = drive.drive.actionBuilder(when(spike.position){
-            SpikeProcessor.Position.LEFT -> Pose2d(spikeLeftX, spikeLeftY, Math.toRadians(180.0))
-            SpikeProcessor.Position.CENTER -> Pose2d(spikeMiddleX, spikeMiddleY, Math.toRadians(90.0))
-            SpikeProcessor.Position.RIGHT -> Pose2d(spikeRightX, spikeRightY, Math.toRadians(0.0))
+            SpikeProcessor.Position.LEFT -> Pose2d(spikeLeftX, spikeLeftY, Math.toRadians(0.0))
+            SpikeProcessor.Position.CENTER -> Pose2d(spikeMiddleX, spikeMiddleY, Math.toRadians(270.0))
+            SpikeProcessor.Position.RIGHT -> Pose2d(spikeRightX, spikeRightY, Math.toRadians(180.0))
         })
             .setReversed(true)
             .strafeTo(when(spike.position){
-                SpikeProcessor.Position.LEFT -> Vector2d(spikeLeftX-5, spikeLeftY+10)
-                SpikeProcessor.Position.CENTER -> Vector2d(spikeMiddleX, spikeMiddleY+5)
-                SpikeProcessor.Position.RIGHT -> Vector2d(spikeRightX+5, spikeRightY+10)
+                SpikeProcessor.Position.LEFT -> Vector2d(spikeLeftX+5, spikeLeftY-10)
+                SpikeProcessor.Position.CENTER -> Vector2d(spikeMiddleX, spikeMiddleY-5)
+                SpikeProcessor.Position.RIGHT -> Vector2d(spikeRightX-5, spikeRightY-10)
             })
             //.splineTo(Vector2d(depositX, depositY), Math.toRadians(180.0))
             /*.splineToLinearHeading(Pose2d(when(spike.position){
@@ -156,6 +155,7 @@ class AutoTest : CommandOpMode() {
 
         schedule(
             SequentialCommandGroup(
+                InstantCommand({intake.drop()}),
                 InstantCommand({intake.servoLeft.position = 0.6
                     intake.servoRight.position = 0.6}),
                 TrajectoryFollowerCommand(drive, when(spike.position){
@@ -163,7 +163,6 @@ class AutoTest : CommandOpMode() {
                     SpikeProcessor.Position.CENTER -> spikeMiddle
                     SpikeProcessor.Position.RIGHT -> spikeRight
                 }),
-                TrajectoryFollowerCommand(drive, deposit),/*
                 ParallelCommandGroup(
                     TrajectoryFollowerCommand(drive, deposit),
                     DepositCmd(lift, arm, wrist, 3.0)
@@ -172,13 +171,12 @@ class AutoTest : CommandOpMode() {
                     intake.servoRight.position = 0.675}),
                 WaitCommand(300),
                 HomeCmd(lift, arm, wrist),
-                TrajectoryFollowerCommand(drive, park)*/
-
-                InstantCommand({projection(when(spike.position){
+                TrajectoryFollowerCommand(drive, park)
+                /*InstantCommand({projection(when(spike.position){
                     SpikeProcessor.Position.LEFT -> 1
                     SpikeProcessor.Position.CENTER -> 2
                     SpikeProcessor.Position.RIGHT -> 3
-                })})
+                })})*/
             )
         )
     }
@@ -269,7 +267,7 @@ class AutoTest : CommandOpMode() {
 
             field.strokeCircle(
                 AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(0)
-                .toDouble(),
+                    .toDouble(),
                 AprilTagGameDatabase.getCurrentGameTagLibrary().lookupTag(target).fieldPosition.get(1)
                     .toDouble(), 2.0)
 

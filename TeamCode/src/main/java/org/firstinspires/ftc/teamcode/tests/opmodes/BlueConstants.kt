@@ -20,11 +20,11 @@ object BlueConstants {
     /*@JvmField var depositX = 47.0
     @JvmField var depositY = 36.0*/
 
-    @JvmField var depositX = 40.0
+    @JvmField var depositX = 43.5
     @JvmField var depositLeftY = 39.0
     @JvmField var depositCenterY = 31.0
     @JvmField var depositRightY = 26.0
 
     @JvmField var parkX = 60.0
-    @JvmField var parkY = 5.0
+    @JvmField var parkY = 2.0
 }

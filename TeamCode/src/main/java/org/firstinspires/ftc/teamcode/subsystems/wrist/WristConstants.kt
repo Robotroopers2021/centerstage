@@ -8,7 +8,7 @@ object WristConstants {
     @JvmField var middlePosition = 0.05
     @JvmField var bufferPosition = 0.065
     @JvmField var zeroPosition = 0.135
-    @JvmField var depositPosition = 0.55
+    @JvmField var depositPosition = 0.5
     @JvmField var depositInternalPosition = 0.05
     @JvmField var spikeDepositPosition = 0.67
 }
