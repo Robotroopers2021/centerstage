@@ -20,7 +20,7 @@ object RedConstants {
     /*@JvmField var depositX = 47.0
     @JvmField var depositY = 36.0*/
 
-    @JvmField var depositX = 43.5
+    @JvmField var depositX = 45.0
     @JvmField var depositRightY = -33.0
     @JvmField var depositCenterY = -31.0
     @JvmField var depositLeftY = -26.0

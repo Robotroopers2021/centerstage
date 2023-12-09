@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.config.Config
 import com.arcrobotics.ftclib.command.SubsystemBase
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorEx
+import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.DigitalChannel
 import com.qualcomm.robotcore.hardware.HardwareMap
 
@@ -20,7 +21,7 @@ class Hang(hardwareMap: HardwareMap): SubsystemBase() {
         hang = hardwareMap.get(DcMotorEx::class.java, "liftLead")
         hang.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.BRAKE
         hang.mode = DcMotor.RunMode.STOP_AND_RESET_ENCODER
-
+        hang.direction = DcMotorSimple.Direction.REVERSE
         limit = hardwareMap.get(DigitalChannel::class.java, "hangLimit")
     }
 
