@@ -42,7 +42,6 @@ class TestOp : CommandOpMode() {
     lateinit var intake : Intake
     lateinit var arm : Arm
     lateinit var wrist: Wrist
-    lateinit var aprilTag: AprilTag
 
     override fun initialize() {
         var dashboard = FtcDashboard.getInstance()
@@ -55,8 +54,6 @@ class TestOp : CommandOpMode() {
         intake = Intake(hardwareMap, telemetry)
         arm = Arm(hardwareMap, telemetry)
         wrist = Wrist(hardwareMap, telemetry)
-        aprilTag = AprilTag(hardwareMap, this, telemetry)
-        aprilTag.currentCamera = AprilTag.Camera.BACK
 
         val intakeCmd = IntakeCmd(intake)
         val armLower = ArmCmd(arm, ArmConstants.zeroPosition)
@@ -119,7 +116,7 @@ class TestOp : CommandOpMode() {
             .whileActiveContinuous(InstantCommand({lift.liftLeadMotor.power = -0.5
                 lift.liftSecondMotor.power = -0.5}))
 
-        schedule(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }, {autoStop()}))
+        schedule(GamepadDrive(drive, { gamepad1.leftY }, { gamepad1.leftX }, { gamepad1.rightX }, {false}))
         register(lift, intake, arm)
     }
     override fun run() {
@@ -128,27 +125,6 @@ class TestOp : CommandOpMode() {
         telemetry.addData("Wrist Position", wrist.position)
         telemetry.addData("Lift Position", lift.liftLeadMotor.currentPosition)
         telemetry.addData("Lift Limit", lift.liftLimit.state)
-        telemetry.addData("tag4", aprilTag.getPose(4)?.position?.y)
-        telemetry.addData("tag5", aprilTag.getPose(5)?.position?.y)
-        telemetry.addData("tag6", aprilTag.getPose(6)?.position?.y)
-        telemetry.addData("fps", aprilTag.visionPortal.fps)
         telemetry.update()
-    }
-
-    private fun autoStop(): Boolean{
-        try {
-            return ((min(
-                doubleArrayOf(
-                    aprilTag.getPose(4)?.position?.y ?: Double.MAX_VALUE,
-                    (aprilTag.getPose(5)?.position?.y) ?: Double.MAX_VALUE,
-                    (aprilTag.getPose(6)?.position?.y) ?: Double.MAX_VALUE,
-                    aprilTag.getPose(1)?.position?.y ?: Double.MAX_VALUE,
-                    (aprilTag.getPose(2)?.position?.y) ?: Double.MAX_VALUE,
-                    (aprilTag.getPose(3)?.position?.y) ?: Double.MAX_VALUE,
-                )
-            ) < 15) && !gamepad1.b)
-        }catch (e: NullPointerException){
-            return false
-        }
     }
 }
